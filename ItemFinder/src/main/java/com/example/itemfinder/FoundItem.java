@@ -1,10 +1,14 @@
 package com.example.itemfinder;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.time.LocalDate;
 
 @Entity
-public class Item {
+public class FoundItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -14,9 +18,9 @@ public class Item {
     private LocalDate date;
 
     // Constructors, Getters and Setters
-    public Item() {}
+    public FoundItem() {}
 
-    public Item(String name, LocalDate date) {
+    public FoundItem(String name, LocalDate date) {
         this.name = name;
         this.date = date;
     }
