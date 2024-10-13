@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      margin: 50px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    form {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Item List</h1>
+
+  <form id="addItemForm">
+    <input type="text" id="name" placeholder="Item Name" required>
+    <input type="date" id="date" required>
+    <button type="submit">Add Item</button>
+  </form>
+
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Date</th>
+    </tr>
+    </thead>
+    <tbody id="itemTableBody">
+    <!-- Items will be displayed here -->
+    </tbody>
+  </table>
+</div>
+
+<script>
+  const apiUrl = 'http://localhost:8080/api/items';
+
+  // Fetch and display items
+  function fetchItems() {
+    fetch(apiUrl)
+            .then(response => response.json())
+            .then(items => {
+              const tableBody = document.getElementById('itemTableBody');
+              tableBody.innerHTML = ''; // Clear table before adding items
+
+              items.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${item.id}</td><td>${item.name}</td><td>${item.date}</td>`;
+                tableBody.appendChild(row);
+              });
+            })
+            .catch(error => console.error('Error fetching items:', error));
+  }
+
+  // Add new item
+  document.getElementById('addItemForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const date = document.getElementById('date').value;
+
+    const newItem = { name, date };
+
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newItem)
+    })
+            .then(response => response.json())
+            .then(item => {
+              // Clear form and refresh item list
+              document.getElementById('addItemForm').reset();
+              fetchItems();
+            })
+            .catch(error => console.error('Error adding item:', error));
+  });
+
+  // Initial fetch
+  fetchItems();
+</script>
+
+</body>
+</html>
