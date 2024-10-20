@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class ItemFinderUsersRepositoryV1 {
-    private static final Logger log = LoggerFactory.getLogger(ItemFinderUsersRepositoryV1.class);
+public class UsersRepositoryV1 {
+    private static final Logger log = LoggerFactory.getLogger(UsersRepositoryV1.class);
     private final JdbcClient jdbcClient;
 
-    public ItemFinderUsersRepositoryV1(JdbcClient jdbcClient) {
+    public UsersRepositoryV1(JdbcClient jdbcClient) {
         this.jdbcClient = jdbcClient;
     }
 

@@ -5,6 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("api/v1/items/found")
-public class ItemFinderItemsFoundV1 {
+@RequestMapping("api/v1/items/lost")
+public class ItemsLostV1 {
 }

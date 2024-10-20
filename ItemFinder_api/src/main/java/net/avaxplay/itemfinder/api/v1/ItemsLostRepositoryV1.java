@@ -3,5 +3,5 @@ package net.avaxplay.itemfinder.api.v1;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ItemFinderItemsFoundRepositoryV1 {
+public class ItemsLostRepositoryV1 {
 }
