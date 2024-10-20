@@ -1,189 +1,172 @@
-// app.js
 
-document.addEventListener('DOMContentLoaded', function () {
-    showTab('lost'); // Show lost items by default
+//const API_BASE_URL = 'http://80.211.200.112:8080/api'
 
-    // Handle Lost Item form submission
-    document.getElementById('lostForm').addEventListener('submit', function (e) {
+
+document.addEventListener('DOMContentLoaded', () => {
+    const lostItemsContainer = document.getElementById('lost-items-container');
+    const foundItemsContainer = document.getElementById('found-items-container');
+    const lostForm = document.getElementById('lost-form');
+    const foundForm = document.getElementById('found-form');
+    const searchInput = document.getElementById('search-input');
+    const toggleLostButton = document.getElementById('toggle-lost');
+    const toggleFoundButton = document.getElementById('toggle-found');
+    const addItemTitle = document.getElementById('add-item-title');
+
+    const API_BASE_URL = 'http://localhost:8080/api';
+    let currentType = 'lost'; // Track current type (lost or found)
+
+    // Function to fetch lost items from the server
+    const fetchLostItems = async () => {
+        const response = await fetch(`${API_BASE_URL}/lost-items`);
+        const lostItems = await response.json();
+        renderLostItems(lostItems);
+    };
+
+    // Function to fetch found items from the server
+    const fetchFoundItems = async () => {
+        const response = await fetch(`${API_BASE_URL}/found-items`);
+        const foundItems = await response.json();
+        renderFoundItems(foundItems);
+    };
+
+    // Function to render lost items
+    const renderLostItems = (items) => {
+        lostItemsContainer.innerHTML = '';
+        items.forEach(item => {
+            const itemDiv = document.createElement('div');
+            itemDiv.classList.add('item-tile');
+            itemDiv.innerHTML = `<h4>${item.name}</h4>
+                                 <p>Date: ${item.lostDate}</p>
+                                 <p>Description: ${item.description || 'N/A'}</p>
+                                 <p>Image: ${item.imagePath || 'N/A'}</p>
+                                 <p>Status: ${item.status || 'N/A'}</p>
+                                 <p>Losing Location: ${item.losingLocation || 'N/A'}</p>`;
+            lostItemsContainer.appendChild(itemDiv);
+        });
+    };
+
+    // Function to render found items
+    const renderFoundItems = (items) => {
+        foundItemsContainer.innerHTML = '';
+        items.forEach(item => {
+            const itemDiv = document.createElement('div');
+            itemDiv.classList.add('item-tile');
+            itemDiv.innerHTML = `<h4>${item.name}</h4>
+                                 <p>Date: ${item.date}</p>
+                                 <p>Description: ${item.description || 'N/A'}</p>
+                                 <p>Image: ${item.imagePath || 'N/A'}</p>
+                                 <p>Status: ${item.status || 'N/A'}</p>
+                                 <p>Finding Location: ${item.findingLocation || 'N/A'}</p>`;
+            foundItemsContainer.appendChild(itemDiv);
+        });
+    };
+
+    // Handle form submission for lost items
+    lostForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        addLostItem();
+        const formData = new FormData(lostForm);
+        const lostItem = {
+            name: formData.get('name'),
+            lostDate: formData.get('date'),
+            description: formData.get('description'), // New field
+            imagePath: formData.get('imagePath'), // New field
+            status: formData.get('status'), // New field
+            losingLocation: formData.get('losingLocation'), // New field
+            // Add other fields if needed
+        };
+
+        const response = await fetch(`${API_BASE_URL}/lost-items`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(lostItem),
+        });
+
+        if (response.ok) {
+            await fetchLostItems();
+            lostForm.reset();
+        } else {
+            console.error('Failed to add lost item:', response.statusText);
+        }
     });
 
-    // Handle Found Item form submission
-    document.getElementById('foundForm').addEventListener('submit', function (e) {
+    // Handle form submission for found items
+    foundForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        addFoundItem();
+        const formData = new FormData(foundForm);
+        const foundItem = {
+            name: formData.get('name'),
+            date: formData.get('date'),
+            description: formData.get('description'), // New field
+            imagePath: formData.get('imagePath'), // New field
+            status: formData.get('status'), // New field
+            findingLocation: formData.get('findingLocation'), // New field
+            // Add other fields if needed
+        };
+
+        const response = await fetch(`${API_BASE_URL}/found-items`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(foundItem),
+        });
+
+        if (response.ok) {
+            await fetchFoundItems();
+            foundForm.reset();
+        } else {
+            console.error('Failed to add found item:', response.statusText);
+        }
     });
 
-    // Load lost and found items on page load
-    loadLostItems();
-    loadFoundItems();
+    // Search functionality for both lost and found items
+    searchInput.addEventListener('input', async () => {
+        const searchTerm = searchInput.value.toLowerCase();
+        let items = [];
+
+        if (currentType === 'lost') {
+            const response = await fetch(`${API_BASE_URL}/lost-items`);
+            items = await response.json();
+        } else {
+            const response = await fetch(`${API_BASE_URL}/found-items`);
+            items = await response.json();
+        }
+
+        const filteredItems = items.filter(item =>
+            item.name.toLowerCase().includes(searchTerm) ||
+            item.date.toLowerCase().includes(searchTerm)
+        );
+
+        if (currentType === 'lost') {
+            renderLostItems(filteredItems);
+        } else {
+            renderFoundItems(filteredItems);
+        }
+    });
+
+    // Toggle between lost and found items
+    toggleLostButton.addEventListener('click', () => {
+        currentType = 'lost';
+        addItemTitle.innerText = 'Add Lost Item';
+        lostForm.style.display = 'block';
+        foundForm.style.display = 'none';
+        lostItemsContainer.style.display = 'block';
+        foundItemsContainer.style.display = 'none';
+        fetchLostItems(); // Fetch and render lost items
+    });
+
+    toggleFoundButton.addEventListener('click', () => {
+        currentType = 'found';
+        addItemTitle.innerText = 'Add Found Item';
+        lostForm.style.display = 'none';
+        foundForm.style.display = 'block';
+        lostItemsContainer.style.display = 'none';
+        foundItemsContainer.style.display = 'block';
+        fetchFoundItems(); // Fetch and render found items
+    });
+
+    // Initial fetch of lost items
+    fetchLostItems();
 });
-
-// Function to show the selected tab
-function showTab(tabName) {
-    // Hide all tabs
-    document.querySelectorAll('.tab').forEach(tab => {
-        tab.style.display = 'none';
-    });
-
-    // Remove active class from all nav links
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.classList.remove('active');
-    });
-
-    // Show the selected tab
-    document.getElementById(tabName).style.display = 'block';
-    // Add active class to the corresponding nav link
-    document.querySelector(`.nav-link[onclick="showTab('${tabName}')"]`).classList.add('active');
-}
-
-// Function to load Lost Items
-function loadLostItems() {
-    fetch('/api/lost-items')
-        .then(response => response.json())
-        .then(data => {
-            displayItems(data, 'lostItemsList');
-        })
-        .catch(error => console.error('Error fetching lost items:', error));
-}
-
-// Function to load Found Items
-function loadFoundItems() {
-    fetch('/api/found-items')
-        .then(response => response.json())
-        .then(data => {
-            displayItems(data, 'foundItemsList');
-        })
-        .catch(error => console.error('Error fetching found items:', error));
-}
-
-// Function to display items as cards
-function displayItems(items, containerId) {
-    const container = document.getElementById(containerId);
-    container.innerHTML = ''; // Clear existing items
-
-    if (items.length === 0) {
-        container.innerHTML = '<p class="text-muted">No items found.</p>';
-        return;
-    }
-
-    items.forEach(item => {
-        const col = document.createElement('div');
-        col.className = 'col-md-4';
-
-        const card = document.createElement('div');
-        card.className = 'card item-card';
-
-        // Optional: Display image if available
-        if (item.imageUrl) {
-            const img = document.createElement('img');
-            img.src = item.imageUrl; // Ensure this URL is correctly served by the backend
-            img.className = 'card-img-top';
-            img.alt = item.name;
-            card.appendChild(img);
-        }
-
-        const cardBody = document.createElement('div');
-        cardBody.className = 'card-body';
-
-        const title = document.createElement('h5');
-        title.className = 'card-title';
-        title.textContent = item.name;
-
-        const date = document.createElement('p');
-        date.className = 'card-text';
-        date.textContent = `Date: ${item.date}`;
-
-        // Optional: Description
-        if (item.description) {
-            const desc = document.createElement('p');
-            desc.className = 'card-text';
-            desc.textContent = item.description;
-            cardBody.appendChild(desc);
-        }
-
-        cardBody.appendChild(title);
-        cardBody.appendChild(date);
-
-        card.appendChild(cardBody);
-        col.appendChild(card);
-        container.appendChild(col);
-    });
-}
-
-// Function to add Lost Item
-function addLostItem() {
-    const name = document.getElementById('lostName').value.trim();
-    const date = document.getElementById('lostDate').value;
-    const description = document.getElementById('lostDescription').value.trim();
-    const imageInput = document.getElementById('lostImage');
-
-    // Prepare form data for image upload if implemented
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('date', date);
-    formData.append('description', description);
-
-    fetch('/api/lost-items', {
-        method: 'POST',
-        // For image uploads, use multipart/form-data
-        // headers: { 'Content-Type': 'application/json' }, // Remove this header
-        body: formData
-    })
-        .then(response => response.json())
-        .then(item => {
-            loadLostItems(); // Refresh the list
-            document.getElementById('lostForm').reset(); // Reset the form
-        })
-        .catch(error => console.error('Error adding lost item:', error));
-}
-
-// Function to add Found Item
-function addFoundItem() {
-    const name = document.getElementById('foundName').value.trim();
-    const date = document.getElementById('foundDate').value;
-    const description = document.getElementById('foundDescription').value.trim();
-    const imageInput = document.getElementById('foundImage');
-
-    // Prepare form data for image upload if implemented
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('date', date);
-    formData.append('description', description);
-
-
-    fetch('/api/found-items', {
-        method: 'POST',
-        // headers: { 'Content-Type': 'application/json' }, // Remove this header
-        body: formData
-    })
-        .then(response => response.json())
-        .then(item => {
-            loadFoundItems(); // Refresh the list
-            document.getElementById('foundForm').reset(); // Reset the form
-        })
-        .catch(error => console.error('Error adding found item:', error));
-}
-
-// Function to search items (both Lost and Found)
-function searchItems() {
-    const name = document.getElementById('searchName').value.trim();
-    const date = document.getElementById('searchDate').value;
-
-    // Fetch Lost Items
-    fetch(`/api/lost-items/search?name=${encodeURIComponent(name)}&date=${encodeURIComponent(date)}`)
-        .then(response => response.json())
-        .then(data => {
-            displayItems(data, 'lostItemsList');
-        })
-        .catch(error => console.error('Error searching lost items:', error));
-
-    // Fetch Found Items
-    fetch(`/api/found-items/search?name=${encodeURIComponent(name)}&date=${encodeURIComponent(date)}`)
-        .then(response => response.json())
-        .then(data => {
-            displayItems(data, 'foundItemsList');
-        })
-        .catch(error => console.error('Error searching found items:', error));
-}

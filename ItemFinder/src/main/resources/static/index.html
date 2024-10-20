@@ -3,111 +3,99 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lost and Found</title>
-  <!-- Bootstrap CSS -->
-  <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-ENjdO4Dr2bkBIFxQpeoI9b6NuKQ5ao9Bz3SX3X9kZIG4rMqqG1U6j4qM/gj7Sk"
-          crossorigin="anonymous">
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="styles.css">
+  <title>Item Finder</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="sha384-QL+jQAkIM9t4+NfzD7sjx5URh2Y2J/96LQa1B6YOmo1W2d+4mgxCRcB/JIfHD2D6" crossorigin="anonymous">
+  <script defer src="app.js"></script>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    #main-content {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    #sidebar {
+      width: 250px;
+      background-color: #f8f9fa;
+      border-right: 1px solid #dee2e6;
+      padding: 20px;
+    }
+
+    #add-item {
+      flex: 1;
+      padding: 20px;
+    }
+
+    #items-container {
+      flex: 2;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .item-tile {
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .btn-toggle {
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
-<!-- Sidebar -->
-<div class="sidebar">
-  <h3 class="text-center">Item Finder</h3>
-  <ul class="nav flex-column">
-    <li class="nav-item">
-      <a class="nav-link active" href="#" onclick="showTab('lost')">Lost Items</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#" onclick="showTab('found')">Found Items</a>
-    </li>
-  </ul>
-  <hr>
+<div class="container-fluid">
+  <h1 class="text-center">Item Finder</h1>
+
   <!-- Search Bar -->
-  <div class="p-3">
-    <h5>Search</h5>
-    <div class="mb-3">
-      <input type="text" id="searchName" class="form-control" placeholder="Search by Name">
-    </div>
-    <div class="mb-3">
-      <input type="date" id="searchDate" class="form-control">
-    </div>
-    <button class="btn btn-primary w-100" onclick="searchItems()">Search</button>
-  </div>
-</div>
+  <input type="text" id="search-input" placeholder="Search by name or date" class="form-control mb-2">
 
-<!-- Main Content -->
-<div class="main-content">
-  <!-- Lost Items Section -->
-  <div id="lost" class="tab active">
-    <h2>Lost Items</h2>
-    <!-- Add Lost Item Form -->
-    <div class="card mb-4">
-      <div class="card-header">Add Lost Item</div>
-      <div class="card-body">
-        <form id="lostForm">
-          <div class="mb-3">
-            <input type="text" id="lostName" class="form-control" placeholder="Item Name" required>
-          </div>
-          <div class="mb-3">
-            <input type="date" id="lostDate" class="form-control" required>
-          </div>
-          <!-- Optional: Description and Image Upload -->
-          <div class="mb-3">
-            <textarea id="lostDescription" class="form-control" placeholder="Description"></textarea>
-          </div>
-
-          <button type="submit" class="btn btn-success">Add Lost Item</button>
-        </form>
-      </div>
+  <div id="main-content">
+    <!-- Sidebar for Lost/Found Selection -->
+    <div id="sidebar">
+      <button class="btn btn-primary btn-toggle" id="toggle-lost">Lost Items</button>
+      <button class="btn btn-success btn-toggle" id="toggle-found">Found Items</button>
     </div>
 
-    <!-- Lost Items List -->
-    <div id="lostItemsList" class="row">
-      <!-- Lost Item Cards will be inserted here -->
-    </div>
-  </div>
+    <!-- Add Item Section -->
+    <div id="add-item">
+      <h2 id="add-item-title">Add Lost Item</h2>
+      <form id="lost-form" class="mb-3">
+        <input type="text" name="name" placeholder="Item Name" required class="form-control mb-2">
+        <input type="date" name="date" required class="form-control mb-2">
+        <input type="text" name="description" placeholder="Description" class="form-control mb-2">
+        <input type="text" name="imagePath" placeholder="Image Path" class="form-control mb-2">
+        <input type="text" name="status" placeholder="Status" class="form-control mb-2">
+        <input type="text" name="losingLocation" placeholder="Losing Location" class="form-control mb-2">
+        <button type="submit" class="btn btn-primary">Add Lost Item</button>
+      </form>
 
-  <!-- Found Items Section -->
-  <div id="found" class="tab" style="display: none;">
-    <h2>Found Items</h2>
-    <!-- Add Found Item Form -->
-    <div class="card mb-4">
-      <div class="card-header">Add Found Item</div>
-      <div class="card-body">
-        <form id="foundForm">
-          <div class="mb-3">
-            <input type="text" id="foundName" class="form-control" placeholder="Item Name" required>
-          </div>
-          <div class="mb-3">
-            <input type="date" id="foundDate" class="form-control" required>
-          </div>
-          <!-- Optional: Description and Image Upload -->
-          <div class="mb-3">
-            <textarea id="foundDescription" class="form-control" placeholder="Description"></textarea>
-          </div>
-
-          <button type="submit" class="btn btn-success">Add Found Item</button>
-        </form>
-      </div>
+      <form id="found-form" class="mb-3" style="display: none;">
+        <input type="text" name="name" placeholder="Item Name" required class="form-control mb-2">
+        <input type="date" name="date" required class="form-control mb-2">
+        <input type="text" name="description" placeholder="Description" class="form-control mb-2">
+        <input type="text" name="imagePath" placeholder="Image Path" class="form-control mb-2">
+        <input type="text" name="status" placeholder="Status" class="form-control mb-2">
+        <input type="text" name="findingLocation" placeholder="Finding Location" class="form-control mb-2">
+        <button type="submit" class="btn btn-success">Add Found Item</button>
+      </form>
     </div>
 
-    <!-- Found Items List -->
-    <div id="foundItemsList" class="row">
-      <!-- Found Item Cards will be inserted here -->
+    <!-- Items Display Section -->
+    <div id="items-container">
+      <h2>Items</h2>
+      <div id="lost-items-container"></div>
+      <div id="found-items-container" style="display: none;"></div>
     </div>
   </div>
 </div>
 
-<!-- Bootstrap JS Bundle -->
-<script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+S7r63nE28RJvpUo+nPGrb6t1wB04"
-        crossorigin="anonymous"></script>
-<!-- Custom JS -->
-<script src="app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-2Y3/YyMWLt1GGT3lqMDE2ejL4f9dkU/m9TfU48GEI1r5FZGT/t50xX78k0fI8/xG" crossorigin="anonymous"></script>
 </body>
 </html>

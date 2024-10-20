@@ -1,14 +1,15 @@
 package com.example.itemfinder;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/lost-items")
-@CrossOrigin(origins = "*")
 public class LostItemController {
 
     private final LostItemService lostItemService;
@@ -18,18 +19,32 @@ public class LostItemController {
         this.lostItemService = lostItemService;
     }
 
+    // Get all lost items
     @GetMapping
-    public List<LostItem> getLostItems() {
-        return lostItemService.getAllLostItems();
+    public ResponseEntity<List<LostItem>> getAllItems() {
+        List<LostItem> items = lostItemService.getAllItems();
+        return ResponseEntity.ok(items);
     }
 
-    @PostMapping
-    public LostItem addLostItem(@RequestBody LostItem lostItem) {
-        return lostItemService.addLostItem(lostItem);
-    }
-
+    // Find items by name
     @GetMapping("/search")
-    public List<LostItem> searchLostItems(@RequestParam String name, @RequestParam(required = false) LocalDate date) {
-        return lostItemService.searchLostItems(name, date);
+    public ResponseEntity<List<LostItem>> findByName(@RequestParam String name) {
+        List<LostItem> items = lostItemService.findByName(name);
+        return ResponseEntity.ok(items);
+    }
+
+    // Add a new lost item
+    @PostMapping
+    public ResponseEntity<LostItem> addItem(@RequestBody LostItem lostItem) {
+        LostItem newItem = lostItemService.addItem(lostItem);
+        return ResponseEntity.ok(newItem);
+    }
+
+    // Get item by ID (optional)
+    @GetMapping("/{id}")
+    public ResponseEntity<LostItem> getItemById(@PathVariable Integer id) {
+        Optional<LostItem> lostItem = lostItemService.getItemById(id);
+        return lostItem.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
