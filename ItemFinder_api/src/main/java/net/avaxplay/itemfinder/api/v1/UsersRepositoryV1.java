@@ -25,17 +25,29 @@ public class UsersRepositoryV1 {
                 .list();
     }
 
-    public Optional<User> findById(Integer Id) {
-        return jdbcClient.sql("SELECT Id, Username FROM Users WHERE Id = :Id")
-                .param("Id", Id)
+    public Optional<User> findById(Integer id) {
+        return jdbcClient.sql("SELECT UserId, Username, PasswordHash FROM Users WHERE UserId = :Id")
+                .param("Id", id)
                 .query(User.class)
                 .optional();
     }
 
-    public void create(User user) {
-        var updated = jdbcClient.sql("INSERT INTO Users (UserId, Username, PasswordHash) VALUES (?, ?, ?)")
+    public Optional<User> findByUsername(String username) {
+        return jdbcClient.sql("SELECT UserId, Username, PasswordHash FROM Users WHERE Username = :Username")
+                .param("Username", username)
+                .query(User.class)
+                .optional();
+    }
+
+    public boolean create(User user) {
+        var updated = jdbcClient.sql("INSERT INTO Users (Username, PasswordHash) VALUES (?, ?, ?)")
                 .params(user.UserId(), user.Username(), user.PasswordHash())
                 .update();
-        Assert.state(updated == 1, "Failed to create user '" + user.Username() + "'");
+        //Assert.state(updated == 1, "Failed to create user '" + user.Username() + "'");
+        return updated == 1;
+    }
+
+    public boolean update(User user) {
+        return false; // not implemented yet
     }
 }
