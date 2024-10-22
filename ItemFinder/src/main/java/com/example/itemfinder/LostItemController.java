@@ -47,4 +47,16 @@ public class LostItemController {
         return lostItem.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/byFinder/{userId}")
+    public ResponseEntity<List<LostItem>> findByFinderId(@PathVariable Integer userId) {
+        List<LostItem> items = lostItemService.findByFinderId(userId);
+        return ResponseEntity.ok(items);
+    }
+
+    @GetMapping("/byLoser/{userId}")
+    public ResponseEntity<List<LostItem>> findByLoserId(@PathVariable Integer userId) {
+        List<LostItem> items = lostItemService.findByLoserId(userId);
+        return ResponseEntity.ok(items);
+    }
 }

@@ -12,4 +12,8 @@ import java.util.List;
 public interface LostItemRepository extends JpaRepository<LostItem, Integer> {
     // Custom query to find by item name
     List<LostItem> findByName(String name);
+
+    List<LostItem> findByFinderId(Integer userId);
+
+    List<LostItem> findByLoserId(Integer userId);
 }

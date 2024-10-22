@@ -5,6 +5,7 @@ package com.example.itemfinder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,5 +38,13 @@ public class FoundItemService {
     // Get item by ID (optional, just in case you need it)
     public Optional<FoundItem> getItemById(Integer id) {
         return foundItemRepository.findById(id);
+    }
+
+    public List<FoundItem> findByFinderId(@PathVariable Integer userId) {
+        return foundItemRepository.findByFinderId(userId);
+    }
+
+    public List<FoundItem> findByLoserId(@PathVariable Integer userId) {
+        return foundItemRepository.findByLoserId(userId);
     }
 }
