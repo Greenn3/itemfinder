@@ -70,4 +70,13 @@ public class ItemsFoundRepositoryV1 {
                 .update();
         return updated == 1;
     }
+
+
+    public boolean delete(Item item) {
+        var updated = jdbcClient.sql("DELETE FROM FoundItems WHERE ItemId = ?")
+                .param(item.ItemId())
+                .update();
+        return updated == 1;
+    }
+
 }

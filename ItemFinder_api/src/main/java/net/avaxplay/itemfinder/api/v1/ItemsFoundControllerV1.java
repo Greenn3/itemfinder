@@ -53,4 +53,9 @@ public class ItemsFoundControllerV1 {
     public HttpStatus update(@RequestBody Item item) {
         return itemsFoundRepository.update(item) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
+
+    @DeleteMapping("/delete")
+    public HttpStatus delete(@RequestBody Item item) {
+        return itemsFoundRepository.delete(item) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    }
 }

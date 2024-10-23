@@ -71,4 +71,10 @@ public class ItemsLostRepositoryV1 {
                 .update();
         return updated == 1;
     }
+    public boolean delete(Item item) {
+        var updated = jdbcClient.sql("DELETE FROM LostItems WHERE ItemId = ?")
+                .params(item.ItemId())
+                .update();
+        return updated == 1;
+    }
 }
