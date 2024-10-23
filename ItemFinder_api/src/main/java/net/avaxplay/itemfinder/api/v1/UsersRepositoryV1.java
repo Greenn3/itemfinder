@@ -40,7 +40,7 @@ public class UsersRepositoryV1 {
     }
 
     public boolean create(User user) {
-        var updated = jdbcClient.sql("INSERT INTO Users (Username, PasswordHash) VALUES (?, ?, ?)")
+        var updated = jdbcClient.sql("INSERT INTO Users (UserId, Username, PasswordHash) VALUES (?, ?, ?)")
                 .params(user.UserId(), user.Username(), user.PasswordHash())
                 .update();
         //Assert.state(updated == 1, "Failed to create user '" + user.Username() + "'");

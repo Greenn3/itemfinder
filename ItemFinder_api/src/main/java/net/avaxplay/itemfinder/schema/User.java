@@ -8,10 +8,6 @@ public record User(
         @NotEmpty String Username,
         @NotEmpty String PasswordHash
 ) {
-    public User(Integer UserId, String Username) {
-        this(UserId, Username, "UNDEFINED");
-    }
-
     public User redacted() {
         return new User(this.UserId, this.Username, "REDACTED");
     }
