@@ -45,4 +45,8 @@ public class ItemsLostServiceV1 {
     public boolean delete(Integer id) {
         return itemsLostRepository.delete(id);
     }
+
+    public Optional<List<Item>> findByNameContaining(String name) {
+        return itemsLostRepository.findByNameContaining(name);
+    }
 }

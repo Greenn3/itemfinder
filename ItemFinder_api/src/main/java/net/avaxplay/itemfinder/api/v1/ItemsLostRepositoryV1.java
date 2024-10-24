@@ -33,6 +33,9 @@ public class ItemsLostRepositoryV1 {
                 .optional();
     }
 
+
+
+
     public List<Item> findByCreatorId(Integer id) {
         return jdbcClient.sql("SELECT * FROM LostItems WHERE CreatorId = :CreatorId")
                 .param("CreatorId", id)
@@ -78,4 +81,14 @@ public class ItemsLostRepositoryV1 {
                 .update();
         return updated == 1;
     }
+
+    public Optional<List<Item>> findByNameContaining(String name) {
+        String searchQuery = "%" + name + "%";
+        List<Item> items = jdbcClient.sql("SELECT * FROM LostItems WHERE ItemName LIKE :name")
+                .param("name", searchQuery)
+                .query(Item.class)
+                .list();
+        return Optional.ofNullable(items.isEmpty() ? null : items);
+    }
+
 }

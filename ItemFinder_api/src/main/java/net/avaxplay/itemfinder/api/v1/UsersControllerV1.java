@@ -1,5 +1,6 @@
 package net.avaxplay.itemfinder.api.v1;
 
+import net.avaxplay.itemfinder.schema.Item;
 import net.avaxplay.itemfinder.schema.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +58,13 @@ public class UsersControllerV1 {
     @DeleteMapping("/delete/{id}")
     public HttpStatus delete(@PathVariable Integer id) {
         return usersService.delete(id) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    }
+
+    @GetMapping("/name_contains/{name}")
+    public ResponseEntity findByNameContaining(@PathVariable String name) {
+        Optional<List<User>> users = usersService.findByNameContaining(name);
+        if (users.isEmpty()) throw new ItemNotFoundException();
+        return ResponseEntity.ok(users.get());
     }
 
 

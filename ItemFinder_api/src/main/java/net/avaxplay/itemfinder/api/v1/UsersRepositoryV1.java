@@ -67,6 +67,14 @@ public boolean delete(Integer id) {
                 .update();
         return updated == 1;
     }
+    public Optional<List<User>> findByNameContaining(String name) {
+        String searchQuery = "%" + name + "%";
+        List<User> users = jdbcClient.sql("SELECT * FROM Users WHERE UserName LIKE :name")
+                .param("name", searchQuery)
+                .query(User.class)
+                .list();
+        return Optional.ofNullable(users.isEmpty() ? null : users);
+    }
 
 
 }

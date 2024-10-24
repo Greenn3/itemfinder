@@ -79,4 +79,14 @@ public class ItemsFoundRepositoryV1 {
         return updated == 1;
     }
 
+    public Optional<List<Item>> findByNameContaining(String name) {
+        String searchQuery = "%" + name + "%";
+        List<Item> items = jdbcClient.sql("SELECT * FROM FoundItems WHERE ItemName LIKE :name")
+                .param("name", searchQuery)
+                .query(Item.class)
+                .list();
+        return Optional.ofNullable(items.isEmpty() ? null : items);
+    }
+
+
 }

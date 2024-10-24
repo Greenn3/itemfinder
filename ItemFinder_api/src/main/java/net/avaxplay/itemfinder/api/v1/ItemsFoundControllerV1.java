@@ -58,4 +58,11 @@ public class ItemsFoundControllerV1 {
     public HttpStatus delete(@PathVariable Integer id) {
         return itemsFoundService.delete(id) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
+
+    @GetMapping("/name_contains/{name}")
+    public ResponseEntity findByNameContaining(@PathVariable String name) {
+        Optional<List<Item>> items = itemsFoundService.findByNameContaining(name);
+        if (items.isEmpty()) throw new ItemNotFoundException();
+        return ResponseEntity.ok(items.get());
+    }
 }

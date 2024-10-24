@@ -1,7 +1,10 @@
 package net.avaxplay.itemfinder.api.v1;
 
 import net.avaxplay.itemfinder.schema.Item;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,5 +47,9 @@ public class ItemsFoundServiceV1 {
 
     public boolean delete(Integer id) {
         return itemsFoundRepository.delete(id);
+    }
+
+    public Optional<List<Item>> findByNameContaining(String name) {
+        return itemsFoundRepository.findByNameContaining(name);
     }
 }

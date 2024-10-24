@@ -43,5 +43,7 @@ public class UsersServiceV1 {
         return usersRepository.delete(id);
     }
 
-
+    public Optional<List<User>> findByNameContaining(String name) {
+        return usersRepository.findByNameContaining(name);
+    }
 }
