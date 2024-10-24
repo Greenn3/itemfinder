@@ -41,4 +41,8 @@ public class ItemsFoundServiceV1 {
     public boolean update(Item item) {
         return itemsFoundRepository.update(item);
     }
+
+    public boolean delete(Integer id) {
+        return itemsFoundRepository.delete(id);
+    }
 }

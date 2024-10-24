@@ -4,6 +4,7 @@ import net.avaxplay.itemfinder.schema.Item;
 import net.avaxplay.itemfinder.schema.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
@@ -71,9 +72,9 @@ public class ItemsLostRepositoryV1 {
                 .update();
         return updated == 1;
     }
-    public boolean delete(Item item) {
+    public boolean delete(Integer id) {
         var updated = jdbcClient.sql("DELETE FROM LostItems WHERE ItemId = ?")
-                .params(item.ItemId())
+                .params(id)
                 .update();
         return updated == 1;
     }

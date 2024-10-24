@@ -1,5 +1,6 @@
 package net.avaxplay.itemfinder.api.v1;
 
+import net.avaxplay.itemfinder.schema.Item;
 import net.avaxplay.itemfinder.schema.User;
 import net.avaxplay.itemfinder.schema.UserNew;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -38,4 +39,9 @@ public class UsersServiceV1 {
         //return usersRepository.update(user) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return false;
     }
+    public boolean delete(Integer id) {
+        return usersRepository.delete(id);
+    }
+
+
 }

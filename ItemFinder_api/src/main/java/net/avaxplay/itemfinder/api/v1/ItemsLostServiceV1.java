@@ -41,4 +41,8 @@ public class ItemsLostServiceV1 {
     public boolean update(Item item) {
         return itemsLostRepository.update(item);
     }
+
+    public boolean delete(Integer id) {
+        return itemsLostRepository.delete(id);
+    }
 }

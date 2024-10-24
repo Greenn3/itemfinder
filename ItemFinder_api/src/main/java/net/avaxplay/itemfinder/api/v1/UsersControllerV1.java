@@ -13,8 +13,11 @@ import java.util.Optional;
 public class UsersControllerV1 {
     private final UsersRepositoryV1 usersRepository;
 
-    public UsersControllerV1(UsersRepositoryV1 usersRepository) {
+    private final UsersServiceV1 usersService;
+
+    public UsersControllerV1(UsersRepositoryV1 usersRepository, UsersServiceV1 usersService) {
         this.usersRepository = usersRepository;
+        this.usersService = usersService;
     }
 
     @GetMapping("")
@@ -50,4 +53,11 @@ public class UsersControllerV1 {
         //return usersRepository.update(user) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return HttpStatus.NOT_IMPLEMENTED;
     }
+
+    @DeleteMapping("/delete/{id}")
+    public HttpStatus delete(@PathVariable Integer id) {
+        return usersService.delete(id) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    }
+
+
 }

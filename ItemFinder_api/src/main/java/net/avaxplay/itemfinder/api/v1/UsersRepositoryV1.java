@@ -1,5 +1,6 @@
 package net.avaxplay.itemfinder.api.v1;
 
+import net.avaxplay.itemfinder.schema.Item;
 import net.avaxplay.itemfinder.schema.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +54,19 @@ public class UsersRepositoryV1 {
     }
 
     public boolean update(User user) {
-        return false; // not implemented yet
+       var updated = jdbcClient.sql("UPDATE Users SET Username = ?, PasswordHash = ? WHERE UserId = ?")
+                .params(user.Username(), user.PasswordHash(), user.UserId())
+                .update();
+        return updated == 1;
+
     }
+public boolean delete(Integer id) {
+
+        var updated = jdbcClient.sql("DELETE FROM Users WHERE UserId = ?")
+                .params(id)
+                .update();
+        return updated == 1;
+    }
+
+
 }

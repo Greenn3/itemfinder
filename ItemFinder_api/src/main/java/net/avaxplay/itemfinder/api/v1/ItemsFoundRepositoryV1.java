@@ -72,9 +72,9 @@ public class ItemsFoundRepositoryV1 {
     }
 
 
-    public boolean delete(Item item) {
+    public boolean delete(Integer id) {
         var updated = jdbcClient.sql("DELETE FROM FoundItems WHERE ItemId = ?")
-                .param(item.ItemId())
+                .param(id)
                 .update();
         return updated == 1;
     }

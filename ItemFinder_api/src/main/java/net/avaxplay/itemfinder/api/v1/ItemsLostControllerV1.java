@@ -53,9 +53,9 @@ public class ItemsLostControllerV1 {
     public HttpStatus update(@RequestBody Item item) {
         return lostService.update(item) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
-    @DeleteMapping("/delete")
-    public HttpStatus delete(@RequestBody Item item) {
-        return itemsLostRepository.delete(item) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    @DeleteMapping("/delete/{id}")
+    public HttpStatus delete(@PathVariable Integer id) {
+        return lostService.delete(id) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
 }
