@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @RestController
 public class ItemFinderApplication extends SpringBootServletInitializer {
+
+	//coment to test commit
 	private static final Logger log = LoggerFactory.getLogger(ItemFinderApplication.class);
 
 	public static void main(String[] args) {
