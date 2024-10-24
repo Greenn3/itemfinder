@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,7 +42,13 @@ public class UsersRepositoryV1 {
         var updated = jdbcClient.sql("INSERT INTO Users (UserId, Username, PasswordHash) VALUES (?, ?, ?)")
                 .params(user.UserId(), user.Username(), user.PasswordHash())
                 .update();
-        //Assert.state(updated == 1, "Failed to create user '" + user.Username() + "'");
+        return updated == 1;
+    }
+
+    public boolean createAutoId(User user) {
+        var updated = jdbcClient.sql("INSERT INTO Users (Username, PasswordHash) VALUES (?, ?)")
+                .params(user.Username(), user.PasswordHash())
+                .update();
         return updated == 1;
     }
 

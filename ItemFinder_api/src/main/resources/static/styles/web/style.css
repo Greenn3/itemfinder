@@ -1,0 +1,27 @@
+body {
+    background-color: lightgray;
+}
+
+.items-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: flex-start;
+    background-color: wheat;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    background-color: darksalmon;
+    min-width: 200px;
+    min-height: 200px;
+}
+
+.item > * {
+    flex: 100%;
+}
+
+.item-name {
+    text-wrap: wrap;
+}
