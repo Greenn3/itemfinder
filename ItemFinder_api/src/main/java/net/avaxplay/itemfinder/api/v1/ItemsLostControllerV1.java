@@ -11,46 +11,46 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api/v1/items/lost")
 public class ItemsLostControllerV1 {
-    private final ItemsLostRepositoryV1 itemsLostRepository;
+    private final ItemsLostServiceV1 lostService;
 
-    public ItemsLostControllerV1(ItemsLostRepositoryV1 itemsLostRepository) {
-        this.itemsLostRepository = itemsLostRepository;
+    public ItemsLostControllerV1(ItemsLostServiceV1 lostService) {
+        this.lostService = lostService;
     }
 
     @GetMapping("")
     public ResponseEntity<List<Item>> findAll() {
-        return ResponseEntity.ok(itemsLostRepository.findAll());
+        return ResponseEntity.ok(lostService.findAll());
     }
 
     @GetMapping("/id/{id}")
     public ResponseEntity<Item> findById(@PathVariable Integer id) {
-        Optional<Item> item = itemsLostRepository.findById(id);
+        Optional<Item> item = lostService.findById(id);
         if (item.isEmpty()) throw new ItemNotFoundException();
         return ResponseEntity.ok(item.get());
     }
 
     @GetMapping("/user/id/{id}")
-    public ResponseEntity<List<Item>> findByUserId(@PathVariable Integer id) {
-        return ResponseEntity.ok(itemsLostRepository.findByCreatorId(id));
+    public ResponseEntity<List<Item>> findByCreatorId(@PathVariable Integer id) {
+        return ResponseEntity.ok(lostService.findByCreatorId(id));
     }
 
     @GetMapping("/user/{username}")
     public ResponseEntity<List<Item>> findByCreatorUsername(@PathVariable String username) {
-        return ResponseEntity.ok(itemsLostRepository.findByCreatorUsername(username));
+        return ResponseEntity.ok(lostService.findByCreatorUsername(username));
     }
 
     @GetMapping("/completed/{completed}")
     public ResponseEntity<List<Item>> findByCompleted(@PathVariable Boolean completed) {
-        return ResponseEntity.ok(itemsLostRepository.findByCompleted(completed));
+        return ResponseEntity.ok(lostService.findByCompleted(completed));
     }
 
     @PostMapping("")
     public HttpStatus create(@RequestBody Item item) {
-        return itemsLostRepository.create(item) ? HttpStatus.CREATED : HttpStatus.CONFLICT;
+        return lostService.create(item) ? HttpStatus.CREATED : HttpStatus.CONFLICT;
     }
 
     @PutMapping("")
     public HttpStatus update(@RequestBody Item item) {
-        return itemsLostRepository.update(item) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return lostService.update(item) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 }
