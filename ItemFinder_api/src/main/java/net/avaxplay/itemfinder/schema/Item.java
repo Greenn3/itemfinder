@@ -31,4 +31,19 @@ public record Item(
         Double Latitude,
         Double Longitude
 ) {
+    public String ItemDescriptionOrEmpty() {
+        return this.ItemDescription == null ? "" : this.ItemDescription;
+    }
+
+    public String ImageUrlOrDummy() {
+        return this.ImageUrl == null ? "https://dummyimage.com/600x400/777777/ffffff.png&text=No+image" : this.ImageUrl;
+    }
+
+    public Double LatitudeOr0() {
+        return this.Latitude == null ? 0d : this.Latitude;
+    }
+
+    public Double LongitudeOr0() {
+        return this.Longitude == null ? 0 : this.Longitude;
+    }
 }

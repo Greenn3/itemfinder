@@ -1,0 +1,14 @@
+main#main-main {
+}
+
+section#main-section {
+    flex: 1;
+    max-width: 600px;
+    width: 100%;
+}
+
+img.default {
+    object-fit: contain;
+    width: 100%;
+    max-height: 500px;
+}

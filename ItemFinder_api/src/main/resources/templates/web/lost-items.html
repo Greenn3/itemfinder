@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Title</title>
   <link th:href="@{/styles/web/style.css}" rel="stylesheet" />
 </head>
 <body>
-  <div class="items-container">
-    <div class="item" th:each="item:${items}">
-      <div>image here</div>
-      <div><span class="item-name" th:text="${item.ItemName}"></span></div>
-    </div>
-  </div>
+  <header id="main-header" th:include="web/template :: header"></header>
+  <main id="main-main">
+    <section class="items-container">
+      <a class="item" th:each="item:${items}" th:href="${'/lost-items/' + item.ItemId}">
+        <div class="image-div"><img th:src="${item.ImageUrlOrDummy}" alt="Item image" /></div>
+        <div><span class="item-name" th:text="${item.ItemName}"></span></div>
+        <div><span class="item-description" th:text="${item.ItemDescriptionOrEmpty}"></span></div>
+      </a>
+    </section>
+  </main>
+  <footer id="main-footer" th:include="web/template :: footer"></footer>
 </body>
 </html>
