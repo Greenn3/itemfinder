@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,5 +52,9 @@ public class ItemsFoundServiceV1 {
 
     public List<Item> findByNameContaining(String name) {
         return itemsFoundRepository.findByNameContaining(name);
+    }
+
+    public List<Item> findByCreationDate(LocalDateTime creationDate) {
+        return itemsFoundRepository.findByCreationDate(creationDate);
     }
 }

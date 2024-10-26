@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,6 +84,14 @@ public class ItemsFoundRepositoryV1 {
         String searchQuery = "%" + name + "%";
         List<Item> items = jdbcClient.sql("SELECT * FROM FoundItems WHERE ItemName LIKE :name")
                 .param("name", searchQuery)
+                .query(Item.class)
+                .list();
+        return items.isEmpty() ? null : items;
+    }
+
+    public List<Item> findByCreationDate(LocalDateTime creationDate) {
+        List<Item> items =  jdbcClient.sql("SELECT * FROM FoundItems WHERE CreationDate = :CreationDate")
+                .param("CreationDate", creationDate)
                 .query(Item.class)
                 .list();
         return items.isEmpty() ? null : items;

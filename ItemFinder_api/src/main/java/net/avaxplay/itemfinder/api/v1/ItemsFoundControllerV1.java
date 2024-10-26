@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,6 +63,13 @@ public class ItemsFoundControllerV1 {
     @GetMapping("/name_contains/{name}")
     public ResponseEntity findByNameContaining(@PathVariable String name) {
         List<Item> items = itemsFoundService.findByNameContaining(name);
+        if (items.isEmpty()) throw new ItemNotFoundException();
+        return ResponseEntity.ok(items);
+    }
+
+    @GetMapping("/creation_date/{creationDate}")
+    public ResponseEntity findByCreationDate(@PathVariable LocalDateTime creationDate) {
+        List<Item> items = itemsFoundService.findByCreationDate(creationDate);
         if (items.isEmpty()) throw new ItemNotFoundException();
         return ResponseEntity.ok(items);
     }

@@ -3,6 +3,7 @@ package net.avaxplay.itemfinder.api.v1;
 import net.avaxplay.itemfinder.schema.Item;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,5 +49,9 @@ public class ItemsLostServiceV1 {
 
     public List<Item> findByNameContaining(String name) {
         return itemsLostRepository.findByNameContaining(name);
+    }
+
+    public List<Item> findByCreationDate(LocalDateTime creationDate) {
+        return itemsLostRepository.findByCreationDate(creationDate);
     }
 }
