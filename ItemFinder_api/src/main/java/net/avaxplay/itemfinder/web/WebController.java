@@ -77,7 +77,14 @@ public class WebController {
     }
 
    @RequestMapping("/map")
-    public String showMap(Model model){
+    public String showMap(){
+        return "web/map";
+    }
+
+    @RequestMapping("/map/{latitude}/{longitude}")
+    public String showMap(@PathVariable Double latitude, @PathVariable Double longitude, Model model) {
+        model.addAttribute("latitude", latitude);
+        model.addAttribute("longitude", longitude);
         return "web/map";
     }
 }

@@ -13,6 +13,7 @@
       <img class="default" th:src="${item.ImageUrlOrDummy}" th:alt="${'image of: ' + item.ItemName}">
       <h1 th:text="${item.ItemName}"></h1>
       <h3 th:text="${item.ItemDescriptionOrEmpty}"></h3>
+      <a th:href="@{/map/{latitude}/{longitude}(latitude=${item.Latitude}, longitude=${item.Longitude})}">Show on map</a>
     </section>
   </main>
   <footer id="main-footer" th:include="web/template :: footer"></footer>
