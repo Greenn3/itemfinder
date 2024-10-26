@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Map Display</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+        .input-group {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<h2>Map Display</h2>
+<div class="input-group">
+    <label>Latitude: </label>
+    <input type="text" id="latitude" placeholder="Enter latitude" value="52.968206004920546">
+    <label>Longitude: </label>
+    <input type="text" id="longitude" placeholder="Enter longitude" value="18.047085141804097">
+    <button onclick="updateMap()">Show on Map</button>
+</div>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    // Static initial coordinates
+    let initialLat = 52.968206004920546;
+    let initialLng = 18.047085141804097;
+
+    // Initialize the map
+    const map = L.map('map').setView([initialLat, initialLng], 13);
+
+    // Add a tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Create a marker and add it to the map
+    let marker = L.marker([initialLat, initialLng]).addTo(map);
+
+    // Update map based on input
+    function updateMap() {
+        const lat = parseFloat(document.getElementById("latitude").value);
+        const lng = parseFloat(document.getElementById("longitude").value);
+
+        if (!isNaN(lat) && !isNaN(lng)) {
+            marker.setLatLng([lat, lng]); // Update marker position
+            map.setView([lat, lng], 13); // Center map to new position
+        } else {
+            alert("Please enter valid latitude and longitude values.");
+        }
+    }
+</script>
+</body>
+</html>
