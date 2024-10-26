@@ -49,7 +49,7 @@ public class ItemsFoundServiceV1 {
         return itemsFoundRepository.delete(id);
     }
 
-    public Optional<List<Item>> findByNameContaining(String name) {
+    public List<Item> findByNameContaining(String name) {
         return itemsFoundRepository.findByNameContaining(name);
     }
 }

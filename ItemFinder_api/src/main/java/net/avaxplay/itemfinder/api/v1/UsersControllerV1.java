@@ -62,9 +62,9 @@ public class UsersControllerV1 {
 
     @GetMapping("/name_contains/{name}")
     public ResponseEntity findByNameContaining(@PathVariable String name) {
-        Optional<List<User>> users = usersService.findByNameContaining(name);
+        List<User> users = usersService.findByNameContaining(name);
         if (users.isEmpty()) throw new ItemNotFoundException();
-        return ResponseEntity.ok(users.get());
+        return ResponseEntity.ok(users);
     }
 
 

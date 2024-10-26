@@ -61,19 +61,27 @@ public class UsersRepositoryV1 {
 
     }
 public boolean delete(Integer id) {
+    // First, delete from LostItem where creatorId is the user ID
+    jdbcClient.sql("DELETE FROM LostItem WHERE creatorId = ?")
+            .params(id)
+            .update();
 
+    // Next, delete from FoundItem where creatorId is the user ID
+    jdbcClient.sql("DELETE FROM FoundItem WHERE creatorId = ?")
+            .params(id)
+            .update();
         var updated = jdbcClient.sql("DELETE FROM Users WHERE UserId = ?")
                 .params(id)
                 .update();
         return updated == 1;
     }
-    public Optional<List<User>> findByNameContaining(String name) {
+    public List<User> findByNameContaining(String name) {
         String searchQuery = "%" + name + "%";
         List<User> users = jdbcClient.sql("SELECT * FROM Users WHERE UserName LIKE :name")
                 .param("name", searchQuery)
                 .query(User.class)
                 .list();
-        return Optional.ofNullable(users.isEmpty() ? null : users);
+        return users.isEmpty() ? null : users;
     }
 
 

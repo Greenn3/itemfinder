@@ -46,7 +46,7 @@ public class ItemsLostServiceV1 {
         return itemsLostRepository.delete(id);
     }
 
-    public Optional<List<Item>> findByNameContaining(String name) {
+    public List<Item> findByNameContaining(String name) {
         return itemsLostRepository.findByNameContaining(name);
     }
 }

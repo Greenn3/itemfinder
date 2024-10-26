@@ -60,9 +60,9 @@ public class ItemsLostControllerV1 {
 
    @GetMapping("/name_contains/{name}")
     public ResponseEntity findByNameContaining(@PathVariable String name) {
-        Optional<List<Item>> items = lostService.findByNameContaining(name);
+        List<Item> items = lostService.findByNameContaining(name);
         if (items.isEmpty()) throw new ItemNotFoundException();
-        return ResponseEntity.ok(items.get());
+        return ResponseEntity.ok(items);
     }
 
 

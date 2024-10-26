@@ -82,13 +82,13 @@ public class ItemsLostRepositoryV1 {
         return updated == 1;
     }
 
-    public Optional<List<Item>> findByNameContaining(String name) {
+    public List<Item> findByNameContaining(String name) {
         String searchQuery = "%" + name + "%";
         List<Item> items = jdbcClient.sql("SELECT * FROM LostItems WHERE ItemName LIKE :name")
                 .param("name", searchQuery)
                 .query(Item.class)
                 .list();
-        return Optional.ofNullable(items.isEmpty() ? null : items);
+        return items.isEmpty() ? null : items;
     }
 
 }

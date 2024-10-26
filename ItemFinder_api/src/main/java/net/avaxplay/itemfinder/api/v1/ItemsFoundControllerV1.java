@@ -61,8 +61,8 @@ public class ItemsFoundControllerV1 {
 
     @GetMapping("/name_contains/{name}")
     public ResponseEntity findByNameContaining(@PathVariable String name) {
-        Optional<List<Item>> items = itemsFoundService.findByNameContaining(name);
+        List<Item> items = itemsFoundService.findByNameContaining(name);
         if (items.isEmpty()) throw new ItemNotFoundException();
-        return ResponseEntity.ok(items.get());
+        return ResponseEntity.ok(items);
     }
 }
