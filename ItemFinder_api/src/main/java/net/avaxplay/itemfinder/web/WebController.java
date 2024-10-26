@@ -75,4 +75,9 @@ public class WebController {
         model.addAttribute("items", itemsFoundService.findById(id));
         return "web/lost-item-singular";
     }
+
+   @RequestMapping("/map")
+    public String showMap(Model model){
+        return "web/map";
+    }
 }
