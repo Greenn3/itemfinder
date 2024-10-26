@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Template</title>
+    <link th:href="@{/styles/web/style.css}" rel="stylesheet" />
+</head>
+<body>
+    <header id="main-header" th:fragment="header">
+        <img th:src="@{/img/logo.webp}" alt="logo">
+        <nav id="header-nav">
+            <div>Button1</div>
+            <div>Button2</div>
+            <div>Button3</div>
+        </nav>
+        <div id="simple-clock"></div>
+        <script th:src="@{/js/simple-clock.js}" defer></script>
+    </header>
+    <main id="main-main">
+        <h1>Placeholder main</h1>
+    </main>
+    <footer id="main-footer" th:fragment="footer">
+        <div>div1</div>
+        <div>div2</div>
+        <div>div3</div>
+    </footer>
+    <script th:src="@{/js/simple-clock.js}"></script>
+</body>
+</html>
