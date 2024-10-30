@@ -1,18 +1,21 @@
 package net.avaxplay.itemfinder.web;
 
-import net.avaxplay.itemfinder.api.v1.ItemNotFoundException;
+import jakarta.validation.Valid;
 import net.avaxplay.itemfinder.api.v1.ItemsFoundServiceV1;
 import net.avaxplay.itemfinder.api.v1.ItemsLostServiceV1;
 import net.avaxplay.itemfinder.api.v1.UsersServiceV1;
 import net.avaxplay.itemfinder.schema.Item;
+import net.avaxplay.itemfinder.schema.ItemForm;
 import net.avaxplay.itemfinder.schema.UserNew;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Controller
@@ -59,7 +62,7 @@ public class WebController {
     @RequestMapping("/found-items")
     public String foundItems(Model model) {
         model.addAttribute("items", itemsFoundService.findAll());
-        return "web/lost-items";
+        return "web/found-items";
     }
 
     @RequestMapping("/lost-items/{id}")
@@ -72,8 +75,10 @@ public class WebController {
 
     @RequestMapping("/found-items/{id}")
     public String foundItemId(Model model, @PathVariable Integer id) {
-        model.addAttribute("items", itemsFoundService.findById(id));
-        return "web/lost-item-singular";
+        Optional<Item> item = itemsLostService.findById(id);
+        if (item.isEmpty()) return "web/item-not-found";
+        model.addAttribute("item", item.get());
+        return "web/found-item-singular";
     }
 
    @RequestMapping("/map")
@@ -87,4 +92,64 @@ public class WebController {
         model.addAttribute("longitude", longitude);
         return "web/map";
     }
+    @RequestMapping("/add-lost")
+    public String addLostItem(Model model) {
+model.addAttribute("itemForm", new ItemForm());
+        return "web/add-lost";
+    }
+
+    @RequestMapping("/add-found")
+    public String addFoundItem(Model model) {
+//model.addAttribute("items", itemsFoundService.findAll() );
+model.addAttribute("itemForm", new ItemForm());
+        return "web/add-found";
+    }
+
+
+
+
+    @PostMapping("/create-lost")
+    public String createLostItem(@ModelAttribute @Valid ItemForm itemForm, BindingResult result) {
+        if (result.hasErrors()) {
+            return "create-lost";
+        }
+        Item item = new Item(
+                null,
+                itemForm.getCreatorId(),
+                itemForm.getItemName(),
+                itemForm.getItemDescription(),
+                LocalDateTime.now(), // creationDate set to current time
+                itemForm.getEventDate(),
+                itemForm.getImageUrl(),
+                itemForm.getCompleted(),
+                itemForm.getHelperId(),
+                itemForm.getLatitude(),
+                itemForm.getLongitude()
+        );
+        itemsLostService.create(item);
+        return "redirect:/lost-items";
+    }
+
+    @PostMapping("/create-found")
+    public String createFoundItem(@ModelAttribute @Valid ItemForm itemForm, BindingResult result) {
+        if(result.hasErrors()){
+            return "create-found";
+        }
+        Item item = new Item(
+                null,
+                itemForm.getCreatorId(),
+                itemForm.getItemName(),
+                itemForm.getItemDescription(),
+                LocalDateTime.now(), // creationDate set to current time
+                itemForm.getEventDate(),
+                itemForm.getImageUrl(),
+                itemForm.getCompleted(),
+                itemForm.getHelperId(),
+                itemForm.getLatitude(),
+                itemForm.getLongitude()
+        );
+        itemsFoundService.create(item);
+        return "redirect:/lost-items";
+    }
+
 }

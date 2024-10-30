@@ -1,10 +1,7 @@
 package net.avaxplay.itemfinder.api.v1;
 
 import net.avaxplay.itemfinder.schema.Item;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,6 +14,7 @@ public class ItemsFoundServiceV1 {
     public ItemsFoundServiceV1(ItemsFoundRepositoryV1 itemsFoundRepository) {
         this.itemsFoundRepository = itemsFoundRepository;
     }
+
 
     public List<Item> findAll() {
         return itemsFoundRepository.findAll();
