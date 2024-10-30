@@ -5,6 +5,8 @@ section#main-section {
     flex: 1;
     max-width: 600px;
     width: 100%;
+    border-left: 1px solid coral;
+    border-right: 1px solid coral;
 }
 
 img.default {

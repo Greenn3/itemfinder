@@ -10,9 +10,9 @@
   <main id="main-main">
     <section class="items-container">
       <a class="item" th:each="item:${items}" th:href="${'/lost-items/' + item.ItemId}">
-        <div class="image-div"><img th:src="${item.ImageUrlOrDummy}" alt="Item image" /></div>
-        <div><span class="item-name" th:text="${item.ItemName}"></span></div>
-        <div><span class="item-description" th:text="${item.ItemDescriptionOrEmpty}"></span></div>
+        <img th:src="${item.ImageUrlOrDummy}" alt="Item image" />
+        <h3 class="item-name" th:text="${item.ItemName}"></h3>
+        <span class="item-description" th:text="${item.ItemDescriptionOrEmpty}"></span>
       </a>
     </section>
   </main>
