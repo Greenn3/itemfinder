@@ -26,7 +26,7 @@ public class ItemFinderApplication extends SpringBootServletInitializer {
 		return "OwO";
 	}
 
-	@RequestMapping("/test")
+	@RequestMapping("/test-site")
 	public String test() {
 		return "test";
 	}

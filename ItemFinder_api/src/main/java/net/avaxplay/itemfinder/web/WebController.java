@@ -151,5 +151,15 @@ model.addAttribute("itemForm", new ItemForm());
         itemsFoundService.create(item);
         return "redirect:/lost-items";
     }
-
+@RequestMapping ("/test-site2")
+    public String test() {
+    return "web/testing-site";
 }
+
+
+    @RequestMapping ("/test-site3")
+    public String testSiteV2() {
+        return "web/indexV2";
+    }
+}
+
