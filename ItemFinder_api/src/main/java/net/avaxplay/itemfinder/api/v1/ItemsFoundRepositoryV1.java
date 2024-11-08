@@ -80,14 +80,28 @@ public class ItemsFoundRepositoryV1 {
         return updated == 1;
     }
 
+
+
     public List<Item> findByNameContaining(String name) {
-        String searchQuery = "%" + name + "%";
-        List<Item> items = jdbcClient.sql("SELECT * FROM FoundItems WHERE ItemName LIKE :name")
+        String searchQuery = "%" + name.toLowerCase() + "%";
+        List<Item> items = jdbcClient.sql("SELECT * FROM LostItems WHERE LOWER(ItemName) LIKE :name")
                 .param("name", searchQuery)
                 .query(Item.class)
                 .list();
         return items.isEmpty() ? null : items;
     }
+
+    public List<Item> findByNameOrDescriptionContaining(String name) {
+        String searchQuery = "%" + name.toLowerCase() + "%";
+        List<Item> items = jdbcClient.sql(
+                        "SELECT * FROM FoundItems WHERE LOWER(ItemName) LIKE :searchQuery OR LOWER(ItemDescription) LIKE :searchQuery")
+                .param("searchQuery", searchQuery)
+                .query(Item.class)
+                .list();
+        return items.isEmpty() ? null : items;
+    }
+
+
 
     public List<Item> findByCreationDate(LocalDateTime creationDate) {
         List<Item> items =  jdbcClient.sql("SELECT * FROM FoundItems WHERE CreationDate = :CreationDate")

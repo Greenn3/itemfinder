@@ -10,12 +10,10 @@ import net.avaxplay.itemfinder.schema.UserNew;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -75,14 +73,14 @@ public class WebController {
 
     @RequestMapping("/found-items/{id}")
     public String foundItemId(Model model, @PathVariable Integer id) {
-        Optional<Item> item = itemsLostService.findById(id);
+        Optional<Item> item = itemsFoundService.findById(id);
         if (item.isEmpty()) return "web/item-not-found";
         model.addAttribute("item", item.get());
         return "web/found-item-singular";
     }
 
-   @RequestMapping("/map")
-    public String showMap(){
+    @RequestMapping("/map")
+    public String showMap() {
         return "web/map";
     }
 
@@ -92,20 +90,19 @@ public class WebController {
         model.addAttribute("longitude", longitude);
         return "web/map";
     }
+
     @RequestMapping("/add-lost")
     public String addLostItem(Model model) {
-model.addAttribute("itemForm", new ItemForm());
+        model.addAttribute("itemForm", new ItemForm());
         return "web/add-lost";
     }
 
     @RequestMapping("/add-found")
     public String addFoundItem(Model model) {
 //model.addAttribute("items", itemsFoundService.findAll() );
-model.addAttribute("itemForm", new ItemForm());
+        model.addAttribute("itemForm", new ItemForm());
         return "web/add-found";
     }
-
-
 
 
     @PostMapping("/create-lost")
@@ -132,7 +129,7 @@ model.addAttribute("itemForm", new ItemForm());
 
     @PostMapping("/create-found")
     public String createFoundItem(@ModelAttribute @Valid ItemForm itemForm, BindingResult result) {
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             return "create-found";
         }
         Item item = new Item(
@@ -151,15 +148,80 @@ model.addAttribute("itemForm", new ItemForm());
         itemsFoundService.create(item);
         return "redirect:/lost-items";
     }
-@RequestMapping ("/test-site2")
+// V2
+
+
+
+
+
+    @RequestMapping("/test-site2")
     public String test() {
-    return "web/testing-site";
-}
+        return "web/testing-site";
+    }
 
 
-    @RequestMapping ("/test-site3")
+    @RequestMapping("/test-site3")
     public String testSiteV2() {
         return "web/indexV2";
     }
+
+
+    @RequestMapping("/found-itemsV2")
+    public String foundItemsV2(Model model) {
+        model.addAttribute("items", itemsFoundService.findAll());
+        return "web/found-itemsV2";
+    }
+
+    @RequestMapping("/lost-itemsV2")
+    public String lostItemsV2(Model model) {
+        model.addAttribute("items", itemsLostService.findAll());
+        return "web/lost-itemsV2";
+    }
+
+
+    @RequestMapping("/lost-itemsV2s")
+    public String lostItemIdV2(Model model, @PathVariable Integer id) {
+       Optional<Item> item = itemsLostService.findById(id);
+        if (item.isEmpty()) return "web/item-not-found";
+        model.addAttribute("item", item.get());
+        return "web/lost-item-singularV2";
+    }
+
+    @RequestMapping("/found-itemsV2/{id}")
+    public String foundItemIdV2(Model model, @PathVariable Integer id) {
+        Optional<Item> item = itemsFoundService.findById(id);
+        if (item.isEmpty()) return "web/item-not-found";
+        model.addAttribute("item", item.get());
+        return "web/found-item-singularV2";
+    }
+
+    // Method to handle search requests
+    @GetMapping("/search-found-items")
+    public String searchFoundItemsByName(@RequestParam("name") String name, Model model) {
+        List<Item> items = itemsFoundService.findByNameContaining(name);
+        model.addAttribute("items", items);
+        return "web/found-itemsV2"; // The template displaying the items, adjust if necessary
+    }
+
+    @GetMapping("/search-lost-items")
+    public String searchLostItemsByName(@RequestParam("name") String name, Model model) {
+        List<Item> items = itemsLostService.findByNameContaining(name);
+        model.addAttribute("items", items);
+        return "web/lost-itemsV2"; // The template displaying the items, adjust if necessary
+    }
+
+
+    @RequestMapping("/add-lostV2")
+    public String addLostItemV2(Model model) {
+        model.addAttribute("itemForm", new ItemForm());
+        return "web/add-lostV2";
+    }
+
+    @RequestMapping("/add-foundV2")
+    public String addFoundItemV2(Model model) {
+        model.addAttribute("itemForm", new ItemForm());
+        return "web/add-foundV2";
+    }
+
 }
 
