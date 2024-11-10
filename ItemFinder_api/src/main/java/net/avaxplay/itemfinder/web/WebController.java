@@ -43,7 +43,7 @@ public class WebController {
         return "redirect:/dynamic";
     }
 
-    @RequestMapping("/dynamic")
+    //@RequestMapping("/dynamic")
     public String dynamic(Model model) {
         model.addAttribute("users", usersService.findAll());
         model.addAttribute("addUser", new UserNew(null, null));

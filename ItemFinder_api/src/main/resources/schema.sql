@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS LostItems (
     Completed boolean NOT NULL DEFAULT FALSE,
     HelperId INT REFERENCES Users(UserId),
     Latitude DECIMAL(10, 7) CHECK (latitude BETWEEN -91.0000000 AND 91.0000000),
-    Longitude DECIMAL(11, 7) CHECK (longitude BETWEEN -181.0000000 AND 181.0000000)
+    Longitude DECIMAL(11, 7) CHECK (longitude BETWEEN -181.0000000 AND 181.0000000),
+    LocationText text
 );
 
 -- FoundItems
@@ -34,6 +35,7 @@ CREATE TABLE IF NOT EXISTS FoundItems (
     Completed boolean NOT NULL DEFAULT FALSE,
     HelperId INT REFERENCES Users(UserId),
     Latitude DECIMAL(10, 7) CHECK (latitude BETWEEN -91.0000000 AND 91.0000000),
-    Longitude DECIMAL(11, 7) CHECK (longitude BETWEEN -181.0000000 AND 181.0000000)
+    Longitude DECIMAL(11, 7) CHECK (longitude BETWEEN -181.0000000 AND 181.0000000),
+    LocationText text
 );
 

@@ -29,7 +29,8 @@ public record Item(
         Boolean Completed,
         Integer HelperId,
         Double Latitude,
-        Double Longitude
+        Double Longitude,
+        String LocationText
 ) {
     public String ItemDescriptionOrEmpty() {
         return this.ItemDescription == null ? "" : this.ItemDescription;
