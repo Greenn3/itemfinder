@@ -29,14 +29,15 @@ public record Item(
         Boolean Completed,
         Integer HelperId,
         Double Latitude,
-        Double Longitude
+        Double Longitude,
+        String LocationText
 ) {
     public String ItemDescriptionOrEmpty() {
         return this.ItemDescription == null ? "" : this.ItemDescription;
     }
 
     public String ImageUrlOrDummy() {
-        return this.ImageUrl == null ? "https://dummyimage.com/600x400/777777/ffffff.png&text=No+image" : this.ImageUrl;
+        return (this.ImageUrl == null || this.ImageUrl.isEmpty()) ? "https://dummyimage.com/200x200/777777/ffffff.png&text=No+image" : this.ImageUrl;
     }
 
     public Double LatitudeOr0() {

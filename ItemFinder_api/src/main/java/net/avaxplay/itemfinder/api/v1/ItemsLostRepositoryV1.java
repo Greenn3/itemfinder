@@ -64,15 +64,15 @@ public class ItemsLostRepositoryV1 {
     }
 
     public boolean create(Item item) {
-        var updated = jdbcClient.sql("insert into LostItems (CreatorId, ItemName, ItemDescription, EventDate, ImageUrl, Latitude, Longitude) values (?, ?, ?, ?, ?, ?, ?)")
-                .params(item.CreatorId(), item.ItemName(), item.ItemDescription(), item.EventDate(), item.ImageUrl(), item.Latitude(), item.Longitude())
+        var updated = jdbcClient.sql("insert into LostItems (CreatorId, ItemName, ItemDescription, EventDate, ImageUrl, Latitude, Longitude, LocationText) values (?, ?, ?, ?, ?, ?, ?, ?)")
+                .params(item.CreatorId(), item.ItemName(), item.ItemDescription(), item.EventDate(), item.ImageUrl(), item.Latitude(), item.Longitude(), item.LocationText())
                 .update();
         return updated == 1;
     }
 
     public boolean update(Item item) {
-        var updated = jdbcClient.sql("UPDATE LostItems SET CreatorId = ?, ItemName = ?, ItemDescription = ?, EventDate = ?, ImageUrl = ?, Completed = ?, HelperId = ?, Latitude = ?, Longitude = ? WHERE ItemId = ?")
-                .params(item.CreatorId(), item.ItemName(), item.ItemDescription(), item.EventDate(), item.ImageUrl(), item.Completed(), item.HelperId(), item.Latitude(), item.Longitude(), item.ItemId())
+        var updated = jdbcClient.sql("UPDATE LostItems SET CreatorId = ?, ItemName = ?, ItemDescription = ?, EventDate = ?, ImageUrl = ?, Completed = ?, HelperId = ?, Latitude = ?, Longitude = ?, LocationText = ? WHERE ItemId = ?")
+                .params(item.CreatorId(), item.ItemName(), item.ItemDescription(), item.EventDate(), item.ImageUrl(), item.Completed(), item.HelperId(), item.Latitude(), item.Longitude(), item.LocationText(), item.ItemId())
                 .update();
         return updated == 1;
     }
