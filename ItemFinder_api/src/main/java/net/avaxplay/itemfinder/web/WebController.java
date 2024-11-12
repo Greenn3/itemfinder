@@ -121,7 +121,8 @@ public class WebController {
                 itemForm.getCompleted(),
                 itemForm.getHelperId(),
                 itemForm.getLatitude(),
-                itemForm.getLongitude()
+                itemForm.getLongitude(),
+                itemForm.getLocationText()
         );
         itemsLostService.create(item);
         return "redirect:/lost-items";
@@ -143,12 +144,13 @@ public class WebController {
                 itemForm.getCompleted(),
                 itemForm.getHelperId(),
                 itemForm.getLatitude(),
-                itemForm.getLongitude()
+                itemForm.getLongitude(),
+                itemForm.getLocationText()
         );
         itemsFoundService.create(item);
-        return "redirect:/lost-items";
+        return "redirect:/found-items";
     }
-// V2
+
 
 
 
@@ -179,7 +181,7 @@ public class WebController {
     }
 
 
-    @RequestMapping("/lost-itemsV2s")
+    @RequestMapping("/lost-itemsV2/{id}")
     public String lostItemIdV2(Model model, @PathVariable Integer id) {
        Optional<Item> item = itemsLostService.findById(id);
         if (item.isEmpty()) return "web/item-not-found";

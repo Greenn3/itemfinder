@@ -12,6 +12,10 @@ public class ItemForm {
     private Integer helperId;
     private Double latitude;
     private Double longitude;
+  //  private String locationText = "";
+
+    public ItemForm() {
+    }
 
     public Integer getCreatorId() {
         return creatorId;
@@ -84,6 +88,18 @@ public class ItemForm {
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
+
+    public String getLocationText() {
+        return "";
+    }
+
+//    public String getLocationText() {
+//        return locationText;
+//    }
+//
+//    public void setLocationText(String locationText) {
+//        this.locationText = locationText;
+//    }
 // Getters and setters for each field
     // These allow Spring to populate form data into this object
 }
