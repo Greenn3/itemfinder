@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 public class UsersServiceV1 {
     private final UsersRepositoryV1 usersRepository;
-    private final BCryptPasswordEncoder bCrypt = new BCryptPasswordEncoder(); // default strength is 10
+    private final BCryptPasswordEncoder bCrypt = new BCryptPasswordEncoder(10); // default strength is 10
 
     public UsersServiceV1(UsersRepositoryV1 usersRepository) {
         this.usersRepository = usersRepository;

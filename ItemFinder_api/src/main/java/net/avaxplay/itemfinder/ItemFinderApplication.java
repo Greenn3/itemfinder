@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@SpringBootApplication(exclude={SecurityAutoConfiguration.class})
+@SpringBootApplication//(exclude={SecurityAutoConfiguration.class})
 @RestController
 public class ItemFinderApplication extends SpringBootServletInitializer {
 

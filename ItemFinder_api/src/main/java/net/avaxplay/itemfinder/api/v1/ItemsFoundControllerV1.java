@@ -1,5 +1,6 @@
 package net.avaxplay.itemfinder.api.v1;
 
+import net.avaxplay.itemfinder.api.ItemNotFoundException;
 import net.avaxplay.itemfinder.schema.Item;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

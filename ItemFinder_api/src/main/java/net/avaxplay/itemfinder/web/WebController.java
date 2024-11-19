@@ -44,7 +44,7 @@ public class WebController {
         return "redirect:/dynamic";
     }
 
-    //@RequestMapping("/dynamic")
+    @RequestMapping("/dynamic")
     public String dynamic(Model model) {
         model.addAttribute("users", usersService.findAll());
         model.addAttribute("addUser", new UserNew(null, null));
@@ -223,6 +223,27 @@ public class WebController {
     public String addFoundItemV2(Model model) {
         model.addAttribute("itemForm", new ItemForm());
         return "web/add-foundV2";
+    }
+
+//    @RequestMapping("/registerV2")
+//    public String registerV2(){
+//        return "web/registerV2";
+//    }
+
+    @RequestMapping("/loginV2")
+    public String loginV2(){
+        return "web/loginV2";
+    }
+    @RequestMapping("/registerV2")
+    public String registerV2(Model model) {
+        model.addAttribute("users", usersService.findAll());
+        model.addAttribute("addUser", new UserNew(null, null));
+        return "web/registerV2";
+    }
+    @PostMapping("/create-userV2")
+    public String createUserV2(@ModelAttribute UserNew userNew) {
+        usersService.create(userNew);
+        return "redirect:/registerV2";
     }
 
 }

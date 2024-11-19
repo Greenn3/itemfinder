@@ -1,6 +1,7 @@
 package net.avaxplay.itemfinder.api.v1;
 
-import net.avaxplay.itemfinder.schema.Item;
+import net.avaxplay.itemfinder.api.ItemNotFoundException;
+import net.avaxplay.itemfinder.api.UserNotFoundException;
 import net.avaxplay.itemfinder.schema.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,6 @@ import java.util.Optional;
 @RequestMapping("api/v1/users")
 public class UsersControllerV1 {
     private final UsersRepositoryV1 usersRepository;
-
     private final UsersServiceV1 usersService;
 
     public UsersControllerV1(UsersRepositoryV1 usersRepository, UsersServiceV1 usersService) {

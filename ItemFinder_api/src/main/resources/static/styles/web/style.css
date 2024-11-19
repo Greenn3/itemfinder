@@ -42,7 +42,7 @@ body {
     text-wrap: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin: -1.25em 5px 0 5px;
+    margin: -1.15em 5px 0 5px;
     /*-webkit-text-stroke: 1px white;*/
     text-shadow: -1px -1px 0 white, -1px 1px 0 white, 1px -1px 0 white, 1px 1px 0 white;
 }
