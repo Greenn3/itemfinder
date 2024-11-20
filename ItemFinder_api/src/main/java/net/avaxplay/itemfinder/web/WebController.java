@@ -125,7 +125,7 @@ public class WebController {
                 itemForm.getLocationText()
         );
         itemsLostService.create(item);
-        return "redirect:/lost-items";
+        return "redirect:/lost-itemsV2";
     }
 
     @PostMapping("/create-found")
@@ -148,7 +148,7 @@ public class WebController {
                 itemForm.getLocationText()
         );
         itemsFoundService.create(item);
-        return "redirect:/found-items";
+        return "redirect:/found-itemsV2";
     }
 
 
@@ -164,20 +164,35 @@ public class WebController {
 
     @RequestMapping("/test-site3")
     public String testSiteV2() {
-        return "web/indexV2";
+        return "web/V2/indexV2";
     }
 
 
     @RequestMapping("/found-itemsV2")
     public String foundItemsV2(Model model) {
         model.addAttribute("items", itemsFoundService.findAll());
-        return "web/found-itemsV2";
+        return "web/V2/found-itemsV2";
+    }
+    @RequestMapping("/found-itemsSortedV2")
+    public String foundItemsSortedV2(
+            @RequestParam(required = false, defaultValue = "CreationDate") String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") String order,
+            Model model) {
+
+        // Fetch sorted items from the service layer
+        List<Item> sortedItems = itemsFoundService.getSortedItems(sortBy, order);
+
+        // Add sorted items to the model
+        model.addAttribute("items", sortedItems);
+
+        // Return the Thymeleaf view
+        return "web/V2/found-itemsV2";
     }
 
     @RequestMapping("/lost-itemsV2")
     public String lostItemsV2(Model model) {
         model.addAttribute("items", itemsLostService.findAll());
-        return "web/lost-itemsV2";
+        return "web/V2/lost-itemsV2";
     }
 
 
@@ -186,7 +201,7 @@ public class WebController {
        Optional<Item> item = itemsLostService.findById(id);
         if (item.isEmpty()) return "web/item-not-found";
         model.addAttribute("item", item.get());
-        return "web/lost-item-singularV2";
+        return "web/V2/lost-item-singularV2";
     }
 
     @RequestMapping("/found-itemsV2/{id}")
@@ -194,7 +209,7 @@ public class WebController {
         Optional<Item> item = itemsFoundService.findById(id);
         if (item.isEmpty()) return "web/item-not-found";
         model.addAttribute("item", item.get());
-        return "web/found-item-singularV2";
+        return "web/V2/found-item-singularV2";
     }
 
     // Method to handle search requests
@@ -202,43 +217,39 @@ public class WebController {
     public String searchFoundItemsByName(@RequestParam("name") String name, Model model) {
         List<Item> items = itemsFoundService.findByNameContaining(name);
         model.addAttribute("items", items);
-        return "web/found-itemsV2"; // The template displaying the items, adjust if necessary
+        return "web/V2/found-itemsV2"; // The template displaying the items, adjust if necessary
     }
 
     @GetMapping("/search-lost-items")
     public String searchLostItemsByName(@RequestParam("name") String name, Model model) {
         List<Item> items = itemsLostService.findByNameContaining(name);
         model.addAttribute("items", items);
-        return "web/lost-itemsV2"; // The template displaying the items, adjust if necessary
+        return "web/V2/lost-itemsV2"; // The template displaying the items, adjust if necessary
     }
 
 
     @RequestMapping("/add-lostV2")
     public String addLostItemV2(Model model) {
         model.addAttribute("itemForm", new ItemForm());
-        return "web/add-lostV2";
+        return "web/V2/add-lostV2";
     }
 
     @RequestMapping("/add-foundV2")
     public String addFoundItemV2(Model model) {
         model.addAttribute("itemForm", new ItemForm());
-        return "web/add-foundV2";
+        return "web/V2/add-foundV2";
     }
 
-//    @RequestMapping("/registerV2")
-//    public String registerV2(){
-//        return "web/registerV2";
-//    }
 
     @RequestMapping("/loginV2")
     public String loginV2(){
-        return "web/loginV2";
+        return "web/V2/loginV2";
     }
     @RequestMapping("/registerV2")
     public String registerV2(Model model) {
         model.addAttribute("users", usersService.findAll());
         model.addAttribute("addUser", new UserNew(null, null));
-        return "web/registerV2";
+        return "web/V2/registerV2";
     }
     @PostMapping("/create-userV2")
     public String createUserV2(@ModelAttribute UserNew userNew) {

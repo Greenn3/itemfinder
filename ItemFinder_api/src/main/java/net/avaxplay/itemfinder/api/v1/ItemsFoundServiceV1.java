@@ -55,4 +55,8 @@ public class ItemsFoundServiceV1 {
     public List<Item> findByCreationDate(LocalDateTime creationDate) {
         return itemsFoundRepository.findByCreationDate(creationDate);
     }
+
+    public List<Item> getSortedItems(String sortBy, String order) {
+        return itemsFoundRepository.findAllSorted(sortBy, order);
+    }
 }
