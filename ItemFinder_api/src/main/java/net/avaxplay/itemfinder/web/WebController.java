@@ -4,14 +4,19 @@ import jakarta.validation.Valid;
 import net.avaxplay.itemfinder.api.v1.ItemsFoundServiceV1;
 import net.avaxplay.itemfinder.api.v1.ItemsLostServiceV1;
 import net.avaxplay.itemfinder.api.v1.UsersServiceV1;
+import net.avaxplay.itemfinder.model.UserPrincipal;
 import net.avaxplay.itemfinder.schema.Item;
 import net.avaxplay.itemfinder.schema.ItemForm;
+import net.avaxplay.itemfinder.schema.User;
 import net.avaxplay.itemfinder.schema.UserNew;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -110,9 +115,13 @@ public class WebController {
         if (result.hasErrors()) {
             return "create-lost";
         }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal(); // Assuming your UserDetails implementation includes an ID
+        Integer creatorId = userDetails.getId(); // Extract the user ID
         Item item = new Item(
                 null,
-                itemForm.getCreatorId(),
+                creatorId,
                 itemForm.getItemName(),
                 itemForm.getItemDescription(),
                 LocalDateTime.now(), // creationDate set to current time
@@ -133,9 +142,16 @@ public class WebController {
         if (result.hasErrors()) {
             return "create-found";
         }
+
+        // Get the currently logged-in user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal(); // Assuming your UserDetails implementation includes an ID
+        Integer creatorId = userDetails.getId(); // Extract the user ID
+
+        // Create the Item object with the creatorId from the logged-in user
         Item item = new Item(
                 null,
-                itemForm.getCreatorId(),
+                creatorId, // Set creatorId from logged-in user
                 itemForm.getItemName(),
                 itemForm.getItemDescription(),
                 LocalDateTime.now(), // creationDate set to current time
@@ -147,10 +163,10 @@ public class WebController {
                 itemForm.getLongitude(),
                 itemForm.getLocationText()
         );
+
         itemsFoundService.create(item);
         return "redirect:/found-itemsV2";
     }
-
 
 
 
@@ -198,17 +214,37 @@ public class WebController {
 
     @RequestMapping("/lost-itemsV2/{id}")
     public String lostItemIdV2(Model model, @PathVariable Integer id) {
-       Optional<Item> item = itemsLostService.findById(id);
-        if (item.isEmpty()) return "web/item-not-found";
-        model.addAttribute("item", item.get());
+       Optional<Item> itemOptional = itemsLostService.findById(id);
+        if (itemOptional.isEmpty()) {
+            return "web/item-not-found";
+        }
+        Item item = itemOptional.get();
+
+        Optional<User> usersOptional = usersService.findById(item.CreatorId());
+        String creatorName = usersOptional.map(User::Username).orElse("Unknown Creator");
+
+        model.addAttribute("item", item);
+        model.addAttribute("creatorName", creatorName);
         return "web/V2/lost-item-singularV2";
     }
 
     @RequestMapping("/found-itemsV2/{id}")
     public String foundItemIdV2(Model model, @PathVariable Integer id) {
-        Optional<Item> item = itemsFoundService.findById(id);
-        if (item.isEmpty()) return "web/item-not-found";
-        model.addAttribute("item", item.get());
+        Optional<Item> itemOptional = itemsFoundService.findById(id);
+        if (itemOptional.isEmpty()) {
+            return "web/item-not-found";
+        }
+
+        Item item = itemOptional.get();
+
+        // Fetch the creator's name using the creatorId from the item
+        Optional<User> userOptional = usersService.findById(item.CreatorId());
+        String creatorName = userOptional.map(User::Username).orElse("Unknown Creator");
+
+        // Add the item and the creator's name to the model
+        model.addAttribute("item", item);
+        model.addAttribute("creatorName", creatorName);
+
         return "web/V2/found-item-singularV2";
     }
 

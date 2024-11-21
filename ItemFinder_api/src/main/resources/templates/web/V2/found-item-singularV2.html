@@ -88,6 +88,11 @@
                                     <img th:src="${item.ImageUrlOrDummy}" th:alt="${'Image of ' + item.ItemName}" class="img-fluid rounded mb-3" style="max-width: 100%; height: auto;">
                                     <h2 class="card-title" th:text="${item.ItemName}">Item Name</h2>
                                     <p class="card-text" th:text="${item.ItemDescriptionOrEmpty}">Short description of the item.</p>
+                                    <p class="card-text" th:text="${item.CreatorId}">Creator ID</p>
+                                    <p class="card-text">
+                                        <strong>Creator:</strong>
+                                        <span th:text="${creatorName}">Creator Name</span>
+                                    </p>
                                 </div>
                             </div>
                         </div>

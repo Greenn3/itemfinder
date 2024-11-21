@@ -10,7 +10,80 @@
 
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 60vh;
+            /*width: 100%;*/
+            overflow: hidden; /* Prevents content overflow */
+        }
 
+        .modal-dialog {
+            max-width: 70%; /* Ensures modal doesn't expand too large */
+
+
+        }
+        .modal-content {
+            height: 85vh; /* 80% of the viewport height */
+        }
+    </style>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let selectedLat = null;
+            let selectedLng = null;
+            let marker = null;
+
+            const mapContainer = document.getElementById('map');
+            const map = L.map(mapContainer).setView([53.129, 18.012], 15); // Default map center 53.12908447571154, 18.012455625460007
+
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Custom marker icon
+            const markerIcon = L.icon({
+                iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+                shadowSize: [41, 41]
+            });
+
+            // Map click handler
+            map.on('click', function (e) {
+                if (marker) {
+                    map.removeLayer(marker); // Remove the existing marker
+                }
+                selectedLat = e.latlng.lat;
+                selectedLng = e.latlng.lng;
+
+                // Place the new marker
+                marker = L.marker([selectedLat, selectedLng], { icon: markerIcon })
+                    .addTo(map)
+                    .bindPopup(`Lat: ${selectedLat.toFixed(5)}, Lng: ${selectedLng.toFixed(5)}`)
+                    .openPopup();
+            });
+
+            // Save coordinates when the modal is saved
+            document.getElementById('saveLocation').addEventListener('click', function () {
+                if (selectedLat !== null && selectedLng !== null) {
+                    document.getElementById('latitude').value = selectedLat;
+                    document.getElementById('longitude').value = selectedLng;
+                }
+            });
+
+            // Fix map rendering inside the modal
+            document.getElementById('mapModal').addEventListener('shown.bs.modal', function () {
+                setTimeout(() => {
+                    map.invalidateSize(); // Fix map tiles not appearing properly
+                }, 200); // Allow modal animation to finish
+            });
+        });
+
+    </script>
 
 </head>
 
@@ -66,81 +139,97 @@
                     </ul>
                 </div>
             </nav>
-    <main id="main-main" class="container my-5">
-        <div class="card shadow mb-3">
-            <div class="card-header py-3">
-                <p class="text-primary m-0 fw-bold">Add Lost Item</p>
+            <main id="main-main" class="container my-5">
+                <div class="card shadow mb-3">
+                    <div class="card-header py-3">
+                        <p class="text-primary m-0 fw-bold">Add Found Item</p>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/create-lost}" th:object="${itemForm}" method="post">
+                            <div class="row">
+<!--                                <div class="col-md-6">-->
+<!--                                    <div class="mb-3">-->
+<!--                                        <label for="creatorId" class="form-label"><strong>Creator ID</strong></label>-->
+<!--                                        <input id="creatorId" type="number" th:field="*{creatorId}" class="form-control" required />-->
+<!--                                    </div>-->
+<!--                                </div>-->
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="itemName" class="form-label"><strong>Item Name</strong></label>
+                                        <input id="itemName" type="text" th:field="*{itemName}" class="form-control" required />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="itemDescription" class="form-label"><strong>Item Description</strong></label>
+                                <textarea id="itemDescription" th:field="*{itemDescription}" class="form-control"></textarea>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="eventDate" class="form-label"><strong>Event Date</strong></label>
+                                        <input id="eventDate" type="datetime-local" th:field="*{eventDate}" class="form-control" required />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="imageUrl" class="form-label"><strong>Image URL</strong></label>
+                                        <input id="imageUrl" type="text" th:field="*{imageUrl}" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+
+<!--                            <div class="mb-3 form-check">-->
+<!--                                <input id="completed" type="checkbox" th:field="*{completed}" class="form-check-input" />-->
+<!--                                <label for="completed" class="form-check-label"><strong>Completed</strong></label>-->
+<!--                            </div>-->
+
+                            <div class="row">
+<!--                                <div class="col-md-6">-->
+<!--                                    <div class="mb-3">-->
+<!--                                        <label for="helperId" class="form-label"><strong>Helper ID</strong></label>-->
+<!--                                        <input id="helperId" type="number" th:field="*{helperId}" class="form-control" />-->
+<!--                                    </div>-->
+<!--                                </div>-->
+                                <div class="col-md-6 d-flex align-items-center">
+                                    <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#mapModal">
+                                        Show Location in Map
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Hidden Inputs for Latitude and Longitude -->
+                            <input id="latitude" type="hidden" th:field="*{latitude}" />
+                            <input id="longitude" type="hidden" th:field="*{longitude}" />
+
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Map Modal -->
+            <div class="modal fade" id="mapModal" tabindex="-1" aria-labelledby="mapModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="mapModalLabel">Select Location</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="map" ></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" id="saveLocation" class="btn btn-primary" data-bs-dismiss="modal">Save Location</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <form th:action="@{/create-lost}" th:object="${itemForm}" method="post">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="creatorId" class="form-label"><strong>Creator ID</strong></label>
-                                <input id="creatorId" type="number" th:field="*{creatorId}" class="form-control" required />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="itemName" class="form-label"><strong>Item Name</strong></label>
-                                <input id="itemName" type="text" th:field="*{itemName}" class="form-control" required />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="itemDescription" class="form-label"><strong>Item Description</strong></label>
-                        <textarea id="itemDescription" th:field="*{itemDescription}" class="form-control"></textarea>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="eventDate" class="form-label"><strong>Event Date</strong></label>
-                                <input id="eventDate" type="datetime-local" th:field="*{eventDate}" class="form-control" required />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="imageUrl" class="form-label"><strong>Image URL</strong></label>
-                                <input id="imageUrl" type="text" th:field="*{imageUrl}" class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mb-3 form-check">
-                        <input id="completed" type="checkbox" th:field="*{completed}" class="form-check-input" />
-                        <label for="completed" class="form-check-label"><strong>Completed</strong></label>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="helperId" class="form-label"><strong>Helper ID</strong></label>
-                                <input id="helperId" type="number" th:field="*{helperId}" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="latitude" class="form-label"><strong>Latitude</strong></label>
-                                <input id="latitude" type="number" step="0.000001" th:field="*{latitude}" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="longitude" class="form-label"><strong>Longitude</strong></label>
-                                <input id="longitude" type="number" step="0.000001" th:field="*{longitude}" class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <button type="submit" class="btn btn-primary btn-sm">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </main>
         </div>
     <footer class="bg-white sticky-footer">
         <div class="container my-auto">
