@@ -11,110 +11,208 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
     <style>
         #map {
-            align-self: center;
-            width: 700px; /* Make it the same width as the card */
-            height: 500px; /* Adjust the height to make it smaller */
+            width: 100%;
+            height: 500px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .item-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        /* Custom Sliding Panel Styles */
+        .sliding-panel {
+            position: absolute;
+            top: 35%; /* Positioned just below the button */
+            /*left: 41%;*/
+            right: 10%;
+            max-width: 58%;
+            background-color: white;
+            z-index: 1050; /* Ensure it's above other elements */
+            transform: translateY(-100%); /* Start hidden above the viewport */
+            visibility: hidden; /* Initially hidden */
+            transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem; /* Add some padding for content */
+        }
+
+        .sliding-panel.show {
+            transform: translateY(-20%); /* Slide into view */
+            visibility: visible; /* Make visible */
+        }
+
+        #toggleOwnerPanel {
+            position: relative;
+            z-index: 1060; /* Ensure the button is above the panel */
+        }
+
     </style>
 </head>
 
 <body id="page-top">
 <div id="wrapper">
-
     <!-- Sidebar -->
-    <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
-        <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-            <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
-            <div class="sidebar-brand-text mx-3"><span>ItemFinder</span></div>
-        </a>
-            <hr class="sidebar-divider my-0">
-            <ul class="navbar-nav text-light" id="accordionSidebar">
-                <li class="nav-item"><a class="nav-link active" href="/test-site3"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-                <li class="nav-item"><a class="nav-link" href="/found-itemsV2"><i class="fas fa-user"></i><span>Found Items</span></a></li>
-                <li class="nav-item"><a class="nav-link" href="/lost-itemsV2"><i class="fas fa-table"></i><span>Lost Items</span></a></li>
-                <li class="nav-item"><a class="nav-link" href="/add-lostV2"><i class="far fa-user-circle"></i><span>Lost it</span></a></li>
-                <li class="nav-item"><a class="nav-link" href="/add-foundV2"><i class="fas fa-user-circle"></i><span>Found it</span></a></li>
-                <li class="nav-item"><a class="nav-link" href="/loginV2"><i class="fas fa-key"></i><span>Sign in</span></a></li>
-                <li class="nav-item"><a class="nav-link" href="/registerV2"><i class="fas fa-key"></i><span>Sign up</span></a></li>
-            </ul>
-            <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
-        </div>
+    <nav id = "left-nav-bar" class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" th:include="web/V2/templateV2 :: #left-nav-bar">
+
     </nav>
-    <!-- Your Sidebar code remains the same -->
+
+    <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
     <div class="d-flex flex-column" id="content-wrapper">
         <div id="content">
-            <!-- Top Bar -->
-            <!-- Your Top Bar code remains the same -->
-            <nav class="navbar navbar-expand bg-white shadow mb-4 topbar">
-                <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
-                    <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search" action="/search-lost-items" method="GET">
-                        <div class="input-group">
-                            <input class="bg-light form-control border-0 small" type="text" name="name" placeholder="Search for items...">
-                            <button class="btn btn-primary py-0" type="submit"><i class="fas fa-search"></i></button>
-                        </div>
-                    </form>
-                    <div class="nav-item dropdown no-arrow">
-                        <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
-                            <span class="d-none d-lg-inline me-2 text-gray-600 small" th:text="${#authentication.name}"></span>
-                            <img class="border rounded-circle img-profile" src="img/avatars/avatar1.jpeg">
-                        </a>
-                        <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>
-                                &nbsp;Profile</a>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-list fa-sm fa-fw me-2 text-gray-400">
-                                </i>&nbsp;Activity log</a>
-                            <div class="dropdown-divider"></div><a class="dropdown-item" href="/logout" methods="post"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+            <!-- Topbar -->
+            <nav id= "top-nav-bar"  th:include = "web/V2/templateV2 :: #top-nav-bar" class="navbar navbar-expand bg-white shadow mb-4 topbar">
 
-                        </div>
-                    </div>
-                </div>
             </nav>
+            <!-- End of Topbar -->
 
-            <main class="container my-5">
-                <div class="row">
-                    <div class="col-md-8 offset-md-2">
-                        <!-- Item Details -->
-                        <div class="card shadow">
-                            <div class="card-body">
-                                <div class="text-center">
-                                    <img th:src="${item.ImageUrlOrDummy}" th:alt="${'Image of ' + item.ItemName}" class="img-fluid rounded mb-3" style="max-width: 100%; height: auto;">
-                                    <h2 class="card-title" th:text="${item.ItemName}">Item Name</h2>
-                                    <p class="card-text" th:text="${item.ItemDescriptionOrEmpty}">Short description of the item.</p>
+            <main class="container my-5 main-content">
+                <!-- Item Details -->
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Image Section -->
+                            <div class="col-md-5">
+                                <img th:src="${item.ImageUrlOrDummy}" th:alt="${'Image of ' + item.ItemName}" class="img-fluid rounded mb-3" style="width: 150%; height: auto;">
+                            </div>
+                            <!-- Item Information -->
+                            <div class="col-md-7">
+                                <h2 class="card-title" th:text="${item.ItemName}">Item Name</h2>
+                                <p class="card-text" th:text="${item.ItemDescriptionOrEmpty}">Short description of the item.</p>
+                                <p class="card-text">
+                                    <strong>Creator:</strong> <span th:text="${creatorName}">Creator Name</span>
+                                </p>
+                                <p class="card-text"><strong>Creator ID:</strong> <span th:text="${item.CreatorId}">Creator ID</span></p>
+                                <p class="card-text">Lost on <span th:text="${item.EventDate()}"> </span></p>
+                                <p class="card-text">Added on <span th:text="${item.CreationDate()}"> </span></p>
+                                <p class="card-text" th:if="${item.LocationText() != null and item.LocationText() != ''}">
+                                    Lost in <span th:text="${item.LocationText()}"></span>
+                                </p>
+                                <!-- Button to Open Modal -->
+                                <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#messageModal">
+                                    I found it!
+                                </button>
+
+                                <!-- Owner Panel Button -->
+                                <div class="my-lg-5"></div> <!-- Adds vertical space -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ownerPanelModal">
+                                    <i class="fas fa-arrow-up"></i> Owner Panel
+                                </button>
+                            </div>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="ownerPanelModal" tabindex="-1" aria-labelledby="ownerPanelModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="ownerPanelModalLabel">Owner Panel</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h4>Welcome, Owner!</h4>
+                                            <p>Here are your controls:</p>
+                                            <!-- Messages -->
+                                            <h5>Messages for this Item</h5>
+                                            <div th:if="${#lists.isEmpty(messages)}">
+                                                <p>No messages found for this item.</p>
+                                            </div>
+                                            <div th:if="${!#lists.isEmpty(messages)}">
+                                                <ul>
+                                                    <li th:each="message : ${messages}">
+                                                        <strong>Sender:</strong> <span th:text="${message.senderId}"></span>
+                                                        <span th:text="${#temporals.format(message.time, 'yyyy-MM-dd HH:mm')}"></span><br>
+                                                        <span th:text="${message.messageText}"></span><br>
+
+                                                        <hr>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+
                                 </div>
+                            </div>
+                            <!-- Modal Structure -->
+                            <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="messageModalLabel">Have you found this item?</h5>
+                                            <h6 class="modal-title">You can write a message to its owner.</h6>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form th:action="@{/send-message}" method="post">
+                                                <!-- Sender ID: Automatically taken from logged-in user -->
+                                                <input type="hidden" id="senderId" name="senderId" th:value="${userId}">
+
+                                                <!-- Item ID: Automatically populated with the displayed item's ID -->
+                                                <input type="hidden" id="itemId" name="itemId" th:value="${item.ItemId()}">
+
+                                                <!-- Message Text -->
+                                                <div class="mb-3">
+                                                    <label for="messageText" class="form-label">Message Text</label>
+                                                    <textarea id="messageText" name="messageText" class="form-control" rows="4" required></textarea>
+                                                </div>
+                                                <h6 class="modal-title"></h6>
+
+
+                                                <input type="hidden" id="time" name="time" class="form-control" required>
+
+
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Map Section -->
+                        <div class="mt-4">
+                            <h3 class="text-center mb-4">Map</h3>
+                            <div id="map" th:if="${item.Latitude != null && item.Longitude != null}" th:data-lat="${item.Latitude}" th:data-lng="${item.Longitude}"></div>
+                            <div th:if="${item.Latitude == null || item.Longitude == null}" class="text-center">
+                                <p>No coordinates provided.</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Map Section -->
-                <div class="container py-4">
-                    <h1 class="text-center mb-4" th:if="${item.Latitude != null && item.Longitude != null}">Map</h1>
-                    <div th:if="${item.Latitude == null || item.Longitude == null}" class="text-center">
-                        <p>No coordinates provided.</p>
-                    </div>
-                    <div class="d-flex justify-content-center align-items-center">
-                        <div   id="map" th:if="${item.Latitude != null && item.Longitude != null}"
-                               th:data-lat="${item.Latitude}"
-                               th:data-lng="${item.Longitude}"
-                               class="rounded shadow">
-                        </div>
-                    </div>
-                </div>
+
             </main>
         </div>
     </div>
 </div>
 
+<!-- Footer -->
+<footer class="bg-white sticky-footer">
+    <div class="container my-auto">
+        <div class="text-center my-auto copyright"><span>Copyright © ItemFinder 2024</span></div>
+    </div>
+</footer>
+
 <!-- Scripts -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Set the "time" input to the current date and time
+    document.getElementById("time").value = new Date().toISOString().slice(0,16); // ISO format adjusted for datetime-local
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Retrieve coordinates from data attributes
@@ -141,12 +239,33 @@
         }
     });
 </script>
+<script>
+    function openModal() {
+        document.getElementById('messageModal').style.display = 'block';
+    }
 
-<footer class="bg-white sticky-footer">
-    <div class="container my-auto">
-        <div class="text-center my-auto copyright"><span>Copyright © ItemFinder 2024</span></div>
-    </div>
-</footer>
+    function closeModal() {
+        document.getElementById('messageModal').style.display = 'none';
+    }
+
+    // Close modal if the user clicks outside of the modal content
+    window.onclick = function(event) {
+        const modal = document.getElementById('messageModal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggleButton = document.getElementById('toggleOwnerPanel');
+        const slidingPanel = document.getElementById('ownerPanel');
+
+        toggleButton.addEventListener('click', function () {
+            slidingPanel.classList.toggle('show');
+        });
+    });
+</script>
+
 </body>
-
 </html>

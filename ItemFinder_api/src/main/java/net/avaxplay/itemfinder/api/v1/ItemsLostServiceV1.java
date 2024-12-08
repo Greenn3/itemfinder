@@ -54,4 +54,7 @@ public class ItemsLostServiceV1 {
     public List<Item> findByCreationDate(LocalDateTime creationDate) {
         return itemsLostRepository.findByCreationDate(creationDate);
     }
+    public List<Item> getSortedItems(String sortBy, String order) {
+        return itemsLostRepository.findAllSorted(sortBy, order);
+    }
 }

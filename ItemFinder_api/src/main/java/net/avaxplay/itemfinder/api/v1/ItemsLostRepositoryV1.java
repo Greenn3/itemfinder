@@ -109,4 +109,23 @@ public class ItemsLostRepositoryV1 {
        return items.isEmpty() ? null : items;
     }
 
+    public List<Item> findAllSorted(String sortBy, String order) {
+        // Default values if parameters are null or invalid
+        if (sortBy == null || sortBy.isEmpty()) {
+            sortBy = "CreationDate"; // Default column to sort by
+        }
+
+        if (order == null || (!order.equalsIgnoreCase("asc") && !order.equalsIgnoreCase("desc"))) {
+            order = "asc"; // Default order
+        }
+
+        // Build the query with sorting
+        String sql = "SELECT * FROM LostItems ORDER BY " + sortBy + " " + order;
+
+        // Execute the query
+        return jdbcClient.sql(sql)
+                .query(Item.class)
+                .list();
+    }
+
 }

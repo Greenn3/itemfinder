@@ -28,6 +28,7 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
         http
+
                 .securityMatcher("/api/v1/**")
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().authenticated()
@@ -59,7 +60,18 @@ public class SecurityConfig {
                         .requestMatchers("/styles/**", "/js/**", "/img/**", "/bootstrap/**", "/fonts/**").permitAll() // Permit all for static resources
                        // .requestMatchers("/api/v1/**").authenticated()                  // Require authentication for "/api/v1/**"
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/test-site3", "/found-itemsV2","/found-itemsV2/**", "/found-item-singularV2", "/lost-itemsV2", "/lost-itemsV2/**", "/lost-item-singularV2/**", "/registerV2").permitAll() // Allow everyone to access the index page
+                        .requestMatchers(
+                                "/test-site3",
+                                "/found-itemsV2",
+                                "/found-itemsV2/**",
+                                "/found-item-singularV2",
+                                "/lost-itemsV2",
+                                "/lost-itemsV2/**",
+                                "/lost-item-singularV2/**",
+                                "/registerV2",
+                                "/lost-itemsSortedV2",
+                                "/found-itemsSortedV2")
+                        .permitAll() // Allow everyone to access the index page
                         .anyRequest().authenticated()                                   // Require authentication for other requests
                 )
                 //.formLogin(Customizer.withDefaults())

@@ -29,7 +29,8 @@ public class UserPrincipal implements UserDetails {
     public String getUsername() {
         return this.user.Username();
     }
-public Integer getId() {
+
+    public Integer getId() {
         return this.user.UserId();
     }
     @Override
