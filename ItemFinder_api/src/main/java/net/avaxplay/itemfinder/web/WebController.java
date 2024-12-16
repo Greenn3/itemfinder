@@ -47,11 +47,11 @@ public class WebController {
         return "web/template";
     }
 
-    @PostMapping("/create-user")
-    public String createUser(@ModelAttribute UserNew userNew) {
-        usersService.create(userNew);
-        return "redirect:/dynamic";
-    }
+//    @PostMapping("/create-user")
+//    public String createUser(@ModelAttribute UserNew userNew) {
+//        usersService.create(userNew);
+//        return "redirect:/dynamic";
+//    }
 
     @RequestMapping("/dynamic")
     public String dynamic(Model model) {
@@ -349,14 +349,17 @@ messageService.add(message);
     }
     @RequestMapping("/registerV2")
     public String registerV2(Model model) {
+        System.out.println("here2");
         model.addAttribute("users", usersService.findAll());
         model.addAttribute("addUser", new UserNew(null, null));
         return "web/V2/registerV2";
     }
     @PostMapping("/create-userV2")
-    public String createUserV2(@ModelAttribute UserNew userNew) {
+    public String createUserV2(@ModelAttribute("addUser") UserNew userNew) {
+        System.out.println("here");
         usersService.create(userNew);
-        return "redirect:/registerV2";
+        System.out.println(userNew);
+        return "redirect:web/V2/loginV2";
     }
 
 }

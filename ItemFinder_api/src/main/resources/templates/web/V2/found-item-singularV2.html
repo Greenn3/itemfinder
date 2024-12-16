@@ -204,7 +204,7 @@
                         <div class="mt-4">
                             <h3 class="text-center mb-4">Map</h3>
                             <div id="map" th:if="${item.Latitude != null && item.Longitude != null}" th:data-lat="${item.Latitude}" th:data-lng="${item.Longitude}"></div>
-                            <div th:if="${item.Latitude == null || item.Longitude == null}" class="text-center">
+                            <div th:if="${item.Latitude == null || item.Longitude == null || item.Latitude()!=0 || item.Longitude() != 0}" class="text-center">
                                 <p>No coordinates provided.</p>
                             </div>
                         </div>

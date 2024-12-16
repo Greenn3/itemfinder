@@ -37,6 +37,7 @@
                         <!-- User Registration Form with only Username and Password fields -->
                         <form th:action="@{/create-userV2}" method="post" th:object="${addUser}" class="user">
                             <div class="mb-3">
+
                                 <label for="username">Username</label>
                                 <input class="form-control form-control-user" type="text" id="username" placeholder="Username" th:field="*{Username}" />
                             </div>

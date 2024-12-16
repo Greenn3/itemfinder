@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Dashboard - ItemFinder</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" href="fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" >
+
+</head>
+
+<body id="page-top">
+<div id="wrapper">
+    <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-3 navbar-dark " id="left-nav-bar" th:fragment = "nav">
+        <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+            <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-map-marked"></i></div>
+            <div class="sidebar-brand-text mx-3 fs-4"><span>ItemFinder</span></div>
+        </a>
+            <hr class="sidebar-divider my-0">
+            <ul class="navbar-nav text-light" id="accordionSidebar">
+
+                <li class="nav-item"><a class="nav-link  fs-6" href="/found-itemsV2"><i class="fas fa-list-ol"></i><span>Found Items</span></a></li>
+                <li class="nav-item"><a class="nav-link  fs-6" href="/lost-itemsV2"><i class="fas fa-list"></i><span>Lost Items</span></a></li>
+                <li class="nav-item"><a class="nav-link fs-6" href="/add-lostV2"><i class="fas fa-thumbs-down"></i><span>Lost it</span></a></li>
+                <li class="nav-item"><a class="nav-link  fs-6" href="/add-foundV2"><i class="fas fa-thumbs-up"></i><span>Found it</span></a></li>
+
+            </ul>
+            <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+        </div>
+    </nav>
+
+
+
+
+    <div class="d-flex flex-column" id="content-wrapper">
+        <div id="content">
+            <nav id="top-nav-bar" th:fragment = "nav" class="navbar navbar-expand bg-white shadow mb-4 topbar">
+                <div class="container-fluid">
+
+                    <ul class="navbar-nav flex-nowrap ms-auto">
+
+
+                        <div class="d-none d-sm-block topbar-divider"></div>
+                        <li class="nav-item dropdown no-arrow">
+
+                            <div th:if="${#authentication.getName() != 'anonymousUser'}" class="nav-item dropdown no-arrow">
+                                <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
+                                    <span class=" d-lg-inline me-2 text-gray-600 small" th:text="${#authentication.name}"></span>
+                                    <img class="border rounded-circle img-profile" src="img/avatars/avatar1.jpeg">
+                                </a>
+                                <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
+
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="/logout" methods="post">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+
+                                </div>
+                            </div>
+
+                            <div th:if="${#authentication.getName() == 'anonymousUser'}" class="nav-item dropdown no-arrow">
+                                <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
+                                    <span class=" d-lg-inline me-2 text-gray-600 small" th:text="${#authentication.name}"></span>
+                                    <img class="border rounded-circle img-profile" src="img/avatars/avatar1.jpeg">
+                                </a>
+                                <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
+
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="/login" methods="post">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
+
+                                </div>
+                            </div>
+
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="container">
+                Welcome to ItemFinder
+            </div>
+        </div>
+        <footer class="bg-white sticky-footer">
+            <div class="container my-auto">
+                <div class="text-center my-auto copyright"><span>Copyright © ItemFinder 2024</span></div>
+            </div>
+        </footer>
+    </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+</div>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="js/chart.min.js"></script>
+<script src="js/bs-init.js"></script>
+<script src="js/theme.js"></script>
+</body>
+
+</html>

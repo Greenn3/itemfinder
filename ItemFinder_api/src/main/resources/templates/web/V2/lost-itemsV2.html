@@ -14,84 +14,30 @@
 <body id="page-top">
 <div id="wrapper">
   <nav  th:include = "web/V2/templateV2 :: #left-nav-bar"  class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
-    <!--    <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">-->
-    <!--      <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>-->
-    <!--      <div class="sidebar-brand-text mx-3"><span>ItemFinder</span></div>-->
-    <!--    </a>-->
-    <!--      <hr class="sidebar-divider my-0">-->
-    <!--      <ul class="navbar-nav text-light" id="accordionSidebar">-->
-    <!--        <li class="nav-item"><a class="nav-link active" href="/test-site3"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>-->
-    <!--        <li class="nav-item"><a class="nav-link" href="/found-itemsV2"><i class="fas fa-user"></i><span>Found Items</span></a></li>-->
-    <!--        <li class="nav-item"><a class="nav-link" href="/lost-itemsV2"><i class="fas fa-table"></i><span>Lost Items</span></a></li>-->
-    <!--        <li class="nav-item"><a class="nav-link" href="/add-lostV2"><i class="far fa-user-circle"></i><span>Lost it</span></a></li>-->
-    <!--        <li class="nav-item"><a class="nav-link" href="/add-foundV2"><i class="fas fa-user-circle"></i><span>Found it</span></a></li>-->
-    <!--        <li class="nav-item"><a class="nav-link" href="/loginV2"><i class="fas fa-key"></i><span>Sign in</span></a></li>-->
-    <!--        <li class="nav-item"><a class="nav-link" href="/registerV2"><i class="fas fa-key"></i><span>Sign up</span></a></li>-->
-    <!--      </ul>-->
-    <!--      <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>-->
-    <!--    </div>-->
   </nav>
+
   <div class="d-flex flex-column" id="content-wrapper">
     <div id="content">
-      <nav id = "top-nav-bar-search"  class="navbar navbar-expand bg-white shadow mb-4 topbar">
-        <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
-
-          <div class="d-flex align-items-center mb-1">
-            <!-- Advanced Search Button (Positioned on the Left Next to Search Bar) -->
-
-            <!-- Existing Search Bar -->
-            <form class="d-none d-sm-inline-block me-5 ms-md-3 my-2 my-md-0 mw-100 navbar-search" action="/search-found-items" method="GET">
-              <div class="input-group">
-                <input class="bg-light form-control border-0 small" type="text" name="name" placeholder="Search for items..." aria-label="Search for items...">
-                <button class="btn btn-primary py-0" type="submit"><i class="fas fa-search"></i></button>
-              </div>
-            </form>
-
-            <button class="btn btn-outline-secondary me-5" type="button" data-bs-toggle="modal" data-bs-target="#advancedSearchModal">
-              Advanced Search
-            </button>
-
-          </div>
-
-
-
-
-          <div th:if="${#authentication.getName() != 'anonymousUser'}" class="nav-item dropdown no-arrow">
-            <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
-              <span class="d-none d-lg-inline me-2 text-gray-600 small" th:text="${#authentication.name}"></span>
-              <img class="border rounded-circle img-profile" src="img/avatars/avatar1.jpeg">
-            </a>
-            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
-
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="/logout" methods="post">
-                <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
-
-            </div>
-          </div>
-
-          <div th:if="${#authentication.getName() == 'anonymousUser'}" class="nav-item dropdown no-arrow">
-            <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
-              <span class="d-none d-lg-inline me-2 text-gray-600 small" th:text="${#authentication.name}"></span>
-              <img class="border rounded-circle img-profile" src="img/avatars/avatar1.jpeg">
-            </a>
-            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
-
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="/login" methods="post">
-                <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
-
-            </div>
-          </div>
-
-
-
-
-        </div>
-
+      <nav  th:include = "web/V2/templateV2 :: #top-nav-bar" class="navbar navbar-expand bg-white shadow mb-4 topbar">
       </nav>
 
 
+      <div class="d-flex flex-wrap align-items-center w-100">
+        <!-- Existing Search Bar -->
+        <form class="d-inline-block flex-grow-1 me-3 my-2 my-md-0 navbar-search" action="/search-lost-items" method="GET">
+          <div class="input-group">
+            <input class="bg-light form-control border-0 small" type="text" name="name" placeholder="Search for items..." aria-label="Search for items...">
+            <button class="btn btn-primary py-0" type="submit">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </form>
+
+        <!-- Advanced Search Button (Smaller on Small Screens) -->
+        <button class="btn btn-outline-secondary py-1 d-flex align-items-center" type="button" data-bs-toggle="modal" data-bs-target="#advancedSearchModal">
+          <i class="fas fa-sliders-h"></i> <!-- Icon instead of text -->
+        </button>
+      </div>
       <div class="row">
 
         <div class="container-fluid mt-4">
@@ -109,9 +55,10 @@
                         <div class="text-start mx-auto d-flex flex-column align-items-start m-3 fs-6 text-secondary">
                           <span th:text="'Posted by: ' + ${userMap[item.CreatorId()]}"></span>
 
-                          <!--                                ${#temporals.format(item.EventDate(), 'yyyy-MM-dd HH:mm')}-->
+
                           <span th:text="'Lost on: ' + ${#temporals.format(item.EventDate(), 'yyyy-MM-dd HH:mm')}"></span>
-                          <span  th:text="'Lost in: ' + ${item.LocationText()}"></span>
+                          <span th:if="${item.LocationText()}" th:text="'Found in: ' + ${item.LocationText()}"></span>
+
 
                         </div>
 

@@ -70,7 +70,8 @@ public class SecurityConfig {
                                 "/lost-item-singularV2/**",
                                 "/registerV2",
                                 "/lost-itemsSortedV2",
-                                "/found-itemsSortedV2")
+                                "/found-itemsSortedV2",
+                        "/create-userV2")
                         .permitAll() // Allow everyone to access the index page
                         .anyRequest().authenticated()                                   // Require authentication for other requests
                 )
@@ -79,12 +80,12 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/loginV2")                  // Set custom login page URL
                         .permitAll()                            // Allow everyone to access the login page
-                        .defaultSuccessUrl("/test-site3", true) // Redirect to /test-site3 on successful login
+                        .defaultSuccessUrl("/found-itemsV2", true) // Redirect to /test-site3 on successful login
                         .failureUrl("/login?error=true")        // Redirect to login page with error parameter on failure
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/test-site3")                  // Redirect after logout
+                        .logoutSuccessUrl("/found-itemsV2")                  // Redirect after logout
                         .invalidateHttpSession(true)            // Explicitly invalidate the session
                         .clearAuthentication(true)              // Ensure authentication is cleared
                         .deleteCookies("JSESSIONID")            // Clear session cookie
