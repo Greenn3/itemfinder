@@ -129,7 +129,7 @@ model.addAttribute("userId", userId);
     @PostMapping("/create-lost")
     public String createLostItem(@ModelAttribute @Valid ItemForm itemForm, BindingResult result) {
         if (result.hasErrors()) {
-            return "create-lost";
+            return "/lost-itemsV2";
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal(); // Assuming your UserDetails implementation includes an ID
@@ -166,7 +166,7 @@ messageService.add(message);
     @PostMapping("/create-found")
     public String createFoundItem(@ModelAttribute @Valid ItemForm itemForm, BindingResult result) {
         if (result.hasErrors()) {
-            return "create-found";
+            return "/found-itemsV2";
         }
 
         // Get the currently logged-in user
