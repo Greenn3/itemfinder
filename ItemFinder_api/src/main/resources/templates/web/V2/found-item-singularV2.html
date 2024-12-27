@@ -59,7 +59,7 @@
 <body id="page-top">
 <div id="wrapper">
     <!-- Sidebar -->
-    <nav id = "left-nav-bar" class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" th:include="web/V2/templateV2 :: #left-nav-bar">
+    <nav id = "left-nav-bar" class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" th:replace="web/V2/templateV2 :: #left-nav-bar">
 
     </nav>
 
@@ -69,7 +69,7 @@
     <div class="d-flex flex-column" id="content-wrapper">
         <div id="content">
             <!-- Topbar -->
-            <nav id= "top-nav-bar"  th:include = "web/V2/templateV2 :: #top-nav-bar" class="navbar navbar-expand bg-white shadow mb-4 topbar">
+            <nav id= "top-nav-bar"  th:replace = "web/V2/templateV2 :: #top-nav-bar" class="navbar navbar-expand bg-white shadow mb-4 topbar">
 
             </nav>
             <!-- End of Topbar -->

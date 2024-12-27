@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -203,10 +204,10 @@ messageService.add(message);
     }
 
 
-    @RequestMapping("/test-site3")
-    public String testSiteV2() {
-        return "web/V2/indexV2";
-    }
+//    @RequestMapping("/test-site3")
+//    public String testSiteV2() {
+//        return "web/V2/indexV2";
+//    }
 
 
     @RequestMapping("/found-itemsV2")
@@ -360,6 +361,31 @@ messageService.add(message);
         usersService.create(userNew);
         System.out.println(userNew);
         return "redirect:web/V2/loginV2";
+    }
+
+    @RequestMapping("/test-site3")
+    public String allItemsV2(Model model) {
+
+
+        List<Item> foundItems = itemsFoundService.findAll();
+        List<Item> lostItems = itemsLostService.findAll();
+        Map<Item, String> combinedItems = new HashMap<>();
+
+        for (Item item : foundItems) {
+            combinedItems.put(item, "found");
+        }
+
+        for (Item item : lostItems) {
+            combinedItems.put(item, "lost");
+        }
+        model.addAttribute("allItems", combinedItems);
+
+        Map<Integer, String> userIdToUsernameMap = usersService.findAll() // Add a method to fetch all users
+                .stream()
+                .collect(Collectors.toMap(User::UserId, User::Username));
+
+        model.addAttribute("userMap", userIdToUsernameMap);
+        return "web/V2/indexV2";
     }
 
 }

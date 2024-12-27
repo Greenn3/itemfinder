@@ -91,12 +91,12 @@
 
 <body id="page-top">
 <div id="wrapper">
-    <nav th:include = "web/V2/templateV2 :: #left-nav-bar" class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
+    <nav th:replace = "web/V2/templateV2 :: #left-nav-bar" class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
 
     </nav>
     <div class="d-flex flex-column" id="content-wrapper">
         <div id="content">
-            <nav th:include = "web/V2/templateV2 :: #top-nav-bar" class="navbar navbar-expand bg-white shadow mb-4 topbar">
+            <nav th:replace = "web/V2/templateV2 :: #top-nav-bar" class="navbar navbar-expand bg-white shadow mb-4 topbar">
 
             </nav>
 

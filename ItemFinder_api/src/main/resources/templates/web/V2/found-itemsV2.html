@@ -8,81 +8,30 @@
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
   <link rel="stylesheet" href="fonts/fontawesome-all.min.css">
-
+<style>
+  .image-class{
+    aspect-ratio: 16/12;
+    object-fit: cover;
+  }
+</style>
 </head>
 
 <body id="page-top">
 <div id="wrapper">
-  <nav  th:include = "web/V2/templateV2 :: #left-nav-bar"  class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
+  <nav  th:replace = "web/V2/templateV2 :: #left-nav-bar"  >
   </nav>
   <div class="d-flex flex-column" id="content-wrapper">
     <div id="content">
-      <nav  th:include = "web/V2/templateV2 :: #top-nav-bar" class="navbar navbar-expand bg-white shadow mb-4 topbar">
+      <nav  th:replace = "web/V2/templateV2 :: #top-nav-bar" class="navbar navbar-expand bg-white shadow mb-4 topbar">
       </nav>
-<!--      <nav id="top-nav-bar-search" class="navbar navbar-expand bg-white shadow mb-4 topbar">-->
-<!--        <div class="container-fluid">-->
-<!--          &lt;!&ndash; Sidebar Toggle Button &ndash;&gt;-->
-<!--          <button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button">-->
-<!--            <i class="fas fa-bars"></i>-->
-<!--          </button>-->
-
-<!--          &lt;!&ndash; Search Bar and Advanced Search &ndash;&gt;-->
-<!--          <div class="d-flex flex-wrap align-items-center w-100">-->
-<!--            &lt;!&ndash; Existing Search Bar &ndash;&gt;-->
-<!--            <form class="d-inline-block flex-grow-1 me-3 my-2 my-md-0 navbar-search" action="/search-found-items" method="GET">-->
-<!--              <div class="input-group">-->
-<!--                <input class="bg-light form-control border-0 small" type="text" name="name" placeholder="Search for items..." aria-label="Search for items...">-->
-<!--                <button class="btn btn-primary py-0" type="submit">-->
-<!--                  <i class="fas fa-search"></i>-->
-<!--                </button>-->
-<!--              </div>-->
-<!--            </form>-->
-
-<!--            &lt;!&ndash; Advanced Search Button (Smaller on Small Screens) &ndash;&gt;-->
-<!--            <button class="btn btn-outline-secondary py-1 d-flex align-items-center" type="button" data-bs-toggle="modal" data-bs-target="#advancedSearchModal">-->
-<!--              <i class="fas fa-sliders-h"></i> &lt;!&ndash; Icon instead of text &ndash;&gt;-->
-<!--            </button>-->
-<!--          </div>-->
-
-<!--          &lt;!&ndash; User Profile / Login &ndash;&gt;-->
-<!--          <div class="d-flex align-items-center">-->
-<!--            <div th:if="${#authentication.getName() != 'anonymousUser'}" class="nav-item dropdown no-arrow">-->
-<!--              <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">-->
-<!--                <span class="d-none d-lg-inline me-2 text-gray-600 small" th:text="${#authentication.name}"></span>-->
-<!--                <img class="border rounded-circle img-profile" src="img/avatars/avatar1.jpeg">-->
-<!--              </a>-->
-<!--              <div class="dropdown-menu shadow dropdown-menu-end animated&#45;&#45;grow-in">-->
-<!--                <div class="dropdown-divider"></div>-->
-<!--                <a class="dropdown-item" href="/logout" methods="post">-->
-<!--                  <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout-->
-<!--                </a>-->
-<!--              </div>-->
-<!--            </div>-->
-
-<!--            <div th:if="${#authentication.getName() == 'anonymousUser'}" class="nav-item dropdown no-arrow">-->
-<!--              <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">-->
-<!--                <span class="d-none d-lg-inline me-2 text-gray-600 small" th:text="${#authentication.name}"></span>-->
-<!--                <img class="border rounded-circle img-profile" src="img/avatars/avatar1.jpeg">-->
-<!--              </a>-->
-<!--              <div class="dropdown-menu shadow dropdown-menu-end animated&#45;&#45;grow-in">-->
-<!--                <div class="dropdown-divider"></div>-->
-<!--                <a class="dropdown-item" href="/login" methods="post">-->
-<!--                  <i class="fas fa-sign-in-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login-->
-<!--                </a>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </nav>-->
 
 
-
-      <div class="d-flex flex-wrap align-items-center w-100">
+      <div class="d-flex align-items-baseline shadow p-2 w-90 mx-2 my-0">
         <!-- Existing Search Bar -->
-        <form class="d-inline-block flex-grow-1 me-3 my-2 my-md-0 navbar-search" action="/search-found-items" method="GET">
+        <form class="d-inline-block w-75 me-3 my-2 my-md-0 navbar-search" action="/search-found-items" method="GET">
           <div class="input-group">
-            <input class="bg-light form-control border-0 small" type="text" name="name" placeholder="Search for items..." aria-label="Search for items...">
-            <button class="btn btn-primary py-0" type="submit">
+            <input class="bg-light form-control border-1 small" type="text" name="name" placeholder="Search for items..." aria-label="Search for items...">
+            <button class="btn btn-primary py-0 mr-5" type="submit">
               <i class="fas fa-search"></i>
             </button>
           </div>
@@ -95,15 +44,15 @@
       </div>
       <div class="row">
 
-              <div class="container-fluid mt-4">
+              <div class="container-fluid mt-4 ">
                 <div class="row">
                   <div class="col-md-4 mb-5 justify-content-center" th:each="item : ${items}">
 
-                    <div class="card shadow border-bottom-primary p-2" style="height: 550px;">
+                    <div class="card shadow border-bottom-primary p-2" style="height: 475px;">
                       <div class="row g-0 justify-content-center text-center">
                         <a th:href="${'/found-itemsV2/' + item.ItemId}" class="text-decoration-none">
                           <div class="col">
-                            <img th:src="${item.ImageUrlOrDummy}" alt="Item image" class="img-fluid mb-3" style="width: 70%; margin: 5%;">
+                            <img th:src="${item.ImageUrlOrDummy}" alt="Item image" class="img-fluid mb-3 image-class" style="width: 70%; margin: 5%;">
                             <div class="card-body justify-content-center text-center align-self-center align-content-center">
                               <h3 class="item-name h3 text-primary-emphasis" th:text="${item.ItemName}"></h3>
                               <!-- Updated Section -->

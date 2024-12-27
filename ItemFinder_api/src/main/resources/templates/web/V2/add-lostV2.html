@@ -89,27 +89,12 @@
 
 <body id="page-top">
 <div id="wrapper">
-    <nav  th:include = "web/V2/templateV2 :: #left-nav-bar" class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
-<!--        <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">-->
-<!--            <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>-->
-<!--            <div class="sidebar-brand-text mx-3"><span>ItemFinder</span></div>-->
-<!--        </a>-->
-<!--            <hr class="sidebar-divider my-0">-->
-<!--            <ul class="navbar-nav text-light" id="accordionSidebar">-->
-<!--                <li class="nav-item"><a class="nav-link active" href="/test-site3"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>-->
-<!--                <li class="nav-item"><a class="nav-link" href="/found-itemsV2"><i class="fas fa-user"></i><span>Found Items</span></a></li>-->
-<!--                <li class="nav-item"><a class="nav-link" href="/lost-itemsV2"><i class="fas fa-table"></i><span>Lost Items</span></a></li>-->
-<!--                <li class="nav-item"><a class="nav-link" href="/add-lostV2"><i class="far fa-user-circle"></i><span>Lost it</span></a></li>-->
-<!--                <li class="nav-item"><a class="nav-link" href="/add-foundV2"><i class="fas fa-user-circle"></i><span>Found it</span></a></li>-->
-<!--                <li class="nav-item"><a class="nav-link" href="/loginV2"><i class="fas fa-key"></i><span>Sign in</span></a></li>-->
-<!--                <li class="nav-item"><a class="nav-link" href="/registerV2"><i class="fas fa-key"></i><span>Sign up</span></a></li>-->
-<!--            </ul>-->
-<!--            <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>-->
-<!--        </div>-->
+    <nav  th:replace = "web/V2/templateV2 :: #left-nav-bar" class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
+
     </nav>
     <div class="d-flex flex-column" id="content-wrapper">
         <div id="content">
-            <nav  th:include = "web/V2/templateV2 :: #top-nav-bar" class="navbar navbar-expand bg-white shadow mb-4 topbar">
+            <nav  th:replace = "web/V2/templateV2 :: #top-nav-bar" class="navbar navbar-expand bg-white shadow mb-4 topbar">
             </nav>
             <main id="main-main" class="container my-5">
                 <div class="card shadow mb-3">
