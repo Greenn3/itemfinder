@@ -129,6 +129,26 @@ public class ItemsFoundRepositoryV1 {
                 .query(Item.class)
                 .list();
     }
+    public List<String> queryColumns() {
+        return jdbcClient.sql("SELECT column_name FROM information_schema.columns WHERE table_name = 'founditems'")
+                .query(String.class)
+                .list();
+    }
+
+    public List<Item> searchAndSort(String searchPhrase, String orderByColumn, boolean descending, boolean filtered) {
+        String column = "eventdate";
+        if (orderByColumn != null && !orderByColumn.isBlank()) {
+            orderByColumn = orderByColumn.toLowerCase();
+            if (queryColumns().contains(orderByColumn)) {
+                column = orderByColumn;
+            }
+        }
+        //noinspection SqlSourceToSinkFlow // String 'column' is protected from SQL-injection by checking in database is it the valid column name
+        return jdbcClient.sql("SELECT * FROM " + (filtered ? "FoundItemsFiltered" : "FoundItems") + ((searchPhrase == null || searchPhrase.isBlank()) ? " " : " WHERE ItemName ILIKE :Search ") + "ORDER BY " + column + " " + (descending ? "DESC" : "ASC"))
+                .param("Search", "%" + searchPhrase + "%")
+                .query(Item.class)
+                .list();
+    }
 
 
 

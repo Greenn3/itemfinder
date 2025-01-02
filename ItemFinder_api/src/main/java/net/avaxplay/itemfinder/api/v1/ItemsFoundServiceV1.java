@@ -59,4 +59,12 @@ public class ItemsFoundServiceV1 {
     public List<Item> getSortedItems(String sortBy, String order) {
         return itemsFoundRepository.findAllSorted(sortBy, order);
     }
+    public List<Item> searchAndSort(String searchPhrase, String orderBy, boolean descending, boolean filtered) {
+        String orderByColumn = switch (orderBy) {
+            case "created" -> "CreationDate";
+            case "name" -> "ItemName";
+            default -> "EventDate";
+        } ;
+        return itemsFoundRepository.searchAndSort(searchPhrase, orderByColumn, descending, filtered);
+    }
 }

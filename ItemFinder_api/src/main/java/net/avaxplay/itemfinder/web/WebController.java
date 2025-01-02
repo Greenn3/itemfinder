@@ -1,13 +1,10 @@
 package net.avaxplay.itemfinder.web;
 
 import jakarta.validation.Valid;
-import net.avaxplay.itemfinder.api.v1.ItemsFoundServiceV1;
-import net.avaxplay.itemfinder.api.v1.ItemsLostServiceV1;
-import net.avaxplay.itemfinder.api.v1.MessageServiceV1;
-import net.avaxplay.itemfinder.api.v1.UsersServiceV1;
+import net.avaxplay.itemfinder.api.v1.*;
 import net.avaxplay.itemfinder.model.UserPrincipal;
 import net.avaxplay.itemfinder.schema.*;
-import org.springframework.http.HttpStatus;
+import net.avaxplay.itemfinder.services.CombinedItemsService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -15,12 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -28,21 +23,27 @@ public class WebController {
     private final UsersServiceV1 usersService;
     private final ItemsLostServiceV1 itemsLostService;
     private final ItemsFoundServiceV1 itemsFoundService;
+    private final ImageUploadService imageUploadService;
 
     private final MessageServiceV1 messageService;
+    private final CombinedItemsService combinedItemsService;
 
-    public WebController(UsersServiceV1 usersService, ItemsLostServiceV1 itemsLostService, ItemsFoundServiceV1 itemsFoundService, MessageServiceV1 messageService) {
+    public WebController(UsersServiceV1 usersService, ItemsLostServiceV1 itemsLostService, ItemsFoundServiceV1 itemsFoundService, ImageUploadService imageUploadService, MessageServiceV1 messageService, CombinedItemsService combinedItemsService) {
         this.usersService = usersService;
         this.itemsLostService = itemsLostService;
         this.itemsFoundService = itemsFoundService;
+        this.imageUploadService = imageUploadService;
         this.messageService = messageService;
+        this.combinedItemsService = combinedItemsService;
     }
 
-    @RequestMapping("/")
-    public String index() {
-        return "web/index";
-    }
-
+//    @RequestMapping("/")
+//    public String index() {
+//        return "web/index";
+//    }
+private Map<Integer, String> getUsersMap() {
+    return usersService.findAll().stream().collect(Collectors.toMap(User::UserId, User::Username));
+}
     @RequestMapping("/template")
     public String template() {
         return "web/template";
@@ -54,51 +55,51 @@ public class WebController {
 //        return "redirect:/dynamic";
 //    }
 
-    @RequestMapping("/dynamic")
-    public String dynamic(Model model) {
-        model.addAttribute("users", usersService.findAll());
-        model.addAttribute("addUser", new UserNew(null, null));
-        return "web/dynamic";
-    }
+//    @RequestMapping("/dynamic")
+//    public String dynamic(Model model) {
+//        model.addAttribute("users", usersService.findAll());
+//        model.addAttribute("addUser", new UserNew(null, null));
+//        return "web/dynamic";
+//    }
 
-    @RequestMapping("/lost-items")
-    public String lostItems(Model model) {
-        model.addAttribute("items", itemsLostService.findAll());
-        return "web/lost-items";
-    }
+//    @RequestMapping("/lost-items")
+//    public String lostItems(Model model) {
+//        model.addAttribute("items", itemsLostService.findAll());
+//        return "web/lost-items";
+//    }
 
-    @RequestMapping("/found-items")
-    public String foundItems(Model model) {
-        model.addAttribute("items", itemsFoundService.findAll());
-        return "web/found-items";
-    }
+//    @RequestMapping("/found-items")
+//    public String foundItems(Model model) {
+//        model.addAttribute("items", itemsFoundService.findAll());
+//        return "web/found-items";
+//    }
 
-    @RequestMapping("/lost-items/{id}")
-    public String lostItemId(Model model, @PathVariable Integer id) {
-        Optional<Item> item = itemsLostService.findById(id);
-        if (item.isEmpty()) return "web/item-not-found";
-        model.addAttribute("item", item.get());
-        return "web/lost-item-singular";
-    }
+//    @RequestMapping("/lost-items/{id}")
+//    public String lostItemId(Model model, @PathVariable Integer id) {
+//        Optional<Item> item = itemsLostService.findById(id);
+//        if (item.isEmpty()) return "web/item-not-found";
+//        model.addAttribute("item", item.get());
+//        return "web/lost-item-singular";
+//    }
 
-    @RequestMapping("/found-items/{id}")
-    public String foundItemId(Model model, @PathVariable Integer id) {
-        System.out.println("here");
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal(); // Assuming your UserDetails implementation includes an ID
-        Integer userId = userDetails.getId();
-        Optional<Item> item = itemsFoundService.findById(id);
-        if (item.isEmpty()) return "web/item-not-found";
-
-        List<Message> messages = messageService.findByItemId(id);
-
-        System.out.println("Messages for itemId " + id + ": " + messages);
-
-        model.addAttribute("item", item.get());
-model.addAttribute("userId", userId);
-        model.addAttribute("messages", messages);
-        return "web/found-item-singular";
-    }
+//    @RequestMapping("/found-items/{id}")
+//    public String foundItemId(Model model, @PathVariable Integer id) {
+//        System.out.println("here");
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal(); // Assuming your UserDetails implementation includes an ID
+//        Integer userId = userDetails.getId();
+//        Optional<Item> item = itemsFoundService.findById(id);
+//        if (item.isEmpty()) return "web/item-not-found";
+//
+//        List<Message> messages = messageService.findByItemId(id);
+//
+//        System.out.println("Messages for itemId " + id + ": " + messages);
+//
+//        model.addAttribute("item", item.get());
+//model.addAttribute("userId", userId);
+//        model.addAttribute("messages", messages);
+//        return "web/found-item-singular";
+//    }
 
     @RequestMapping("/map")
     public String showMap() {
@@ -129,11 +130,22 @@ model.addAttribute("userId", userId);
     @PostMapping("/create-lost")
     public String createLostItem(@ModelAttribute @Valid ItemForm itemForm, BindingResult result) {
         if (result.hasErrors()) {
-            return "/lost-itemsV2";
+            System.out.println(result);
+            return "redirect:/add-lostV2";
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal(); // Assuming your UserDetails implementation includes an ID
         Integer creatorId = userDetails.getId(); // Extract the user ID
+
+        String imagePath = null;
+        if (itemForm.getImageFile() != null) {
+            try {
+                imagePath = imageUploadService.uploadFoundImage(itemForm.getImageFile());
+            } catch (IOException e) {
+                //throw new RuntimeException(e);
+            }
+        }
+
         Item item = new Item(
                 null,
                 creatorId,
@@ -141,7 +153,7 @@ model.addAttribute("userId", userId);
                 itemForm.getItemDescription(),
                 LocalDateTime.now(), // creationDate set to current time
                 itemForm.getEventDate(),
-                itemForm.getImageUrl(),
+                (imagePath == null ? itemForm.getImageUrl() : imagePath),
                 itemForm.getCompleted(),
                 itemForm.getHelperId(),
                 itemForm.getLatitude(),
@@ -166,7 +178,15 @@ messageService.add(message);
     @PostMapping("/create-found")
     public String createFoundItem(@ModelAttribute @Valid ItemForm itemForm, BindingResult result) {
         if (result.hasErrors()) {
-            return "/found-itemsV2";
+            return "web/V2/found-itemsV2";
+        }
+        String imagePath = null;
+        if (itemForm.getImageFile() != null) {
+            try {
+                imagePath = imageUploadService.uploadFoundImage(itemForm.getImageFile());
+            } catch (IOException e) {
+                //throw new RuntimeException(e);
+            }
         }
 
         // Get the currently logged-in user
@@ -182,7 +202,7 @@ messageService.add(message);
                 itemForm.getItemDescription(),
                 LocalDateTime.now(), // creationDate set to current time
                 itemForm.getEventDate(),
-                itemForm.getImageUrl(),
+                (imagePath == null ? itemForm.getImageUrl() : imagePath),
                 itemForm.getCompleted(),
                 itemForm.getHelperId(),
                 itemForm.getLatitude(),
@@ -210,19 +230,43 @@ messageService.add(message);
 //    }
 
 
+//    @RequestMapping("/found-itemsV2-")
+//    public String foundItemsV2p(Model model) {
+//        List<Item> items = itemsFoundService.findAll();
+//        Map<Integer, String> userIdToUsernameMap = usersService.findAll() // Add a method to fetch all users
+//                .stream()
+//                .collect(Collectors.toMap(User::UserId, User::Username));
+//        model.addAttribute("items", items);
+//        model.addAttribute("userMap", userIdToUsernameMap);
+//        return "web/V2/found-itemsV2";
+//    }
     @RequestMapping("/found-itemsV2")
-    public String foundItemsV2(Model model) {
-        List<Item> items = itemsFoundService.findAll();
-        Map<Integer, String> userIdToUsernameMap = usersService.findAll() // Add a method to fetch all users
-                .stream()
-                .collect(Collectors.toMap(User::UserId, User::Username));
-        model.addAttribute("items", items);
-        model.addAttribute("userMap", userIdToUsernameMap);
+    public String foundItemsV2(
+            Model model,
+            @ModelAttribute("searchForm") SearchSortForm searchSortForm,
+            BindingResult result,
+            @RequestParam(required = false, defaultValue = "") String searchPhrase,
+            @RequestParam(required = false, defaultValue = "date") String sortBy,
+            @RequestParam(required = false, defaultValue = "desc") String sortOrder,
+            @RequestParam(required = false, defaultValue = "false") String filter
+    ) {
+        boolean filtered = (!Objects.equals(filter, "false"));
+      //  model.addAttribute("itemUrlBase", "/found-itemsV2/");
+        model.addAttribute("items", itemsFoundService.searchAndSort(searchPhrase, sortBy, (sortOrder.equals("desc")), filtered));
+        model.addAttribute("formAction", "/found-itemsV2");
+        model.addAttribute("filtered", filtered);
+      //  model.addAttribute("whatHappened", "found");
+        model.addAttribute("userMap", getUsersMap());
+        if (result.hasErrors()) {
+            System.out.println(result);
+            return "web/V2/found-itemsV2";
+        }
         return "web/V2/found-itemsV2";
     }
 
-    @RequestMapping("/lost-itemsV2")
-    public String lostItemsV2(Model model) {
+
+    @RequestMapping("/lost-itemsV2p")
+    public String lostItemsV2p(Model model) {
         List<Item> items = itemsLostService.findAll();
         Map<Integer, String> itemsLostTUsernameMap = usersService.findAll()
                 .stream()
@@ -232,6 +276,31 @@ messageService.add(message);
         model.addAttribute("userMap", itemsLostTUsernameMap);
         return "web/V2/lost-itemsV2";
     }
+    @RequestMapping("/lost-itemsV2")
+    public String lostItemsV2(
+            Model model,
+            @ModelAttribute("searchForm") SearchSortForm searchSortForm,
+            BindingResult result,
+            @RequestParam(required = false, defaultValue = "") String searchPhrase,
+            @RequestParam(required = false, defaultValue = "date") String sortBy,
+            @RequestParam(required = false, defaultValue = "desc") String sortOrder,
+            @RequestParam(required = false, defaultValue = "false") String filter
+    ) {
+        boolean filtered = (!Objects.equals(filter, "false"));
+        //  model.addAttribute("itemUrlBase", "/found-itemsV2/");
+        model.addAttribute("items", itemsLostService.searchAndSort(searchPhrase, sortBy, (sortOrder.equals("desc")), filtered));
+        model.addAttribute("formAction", "/lost-itemsV2");
+        model.addAttribute("filtered", filtered);
+        //  model.addAttribute("whatHappened", "found");
+        model.addAttribute("userMap", getUsersMap());
+        if (result.hasErrors()) {
+            System.out.println(result);
+            return "web/V2/lost-itemsV2";
+        }
+        return "web/V2/lost-itemsV2";
+    }
+
+
     @RequestMapping("/found-itemsSortedV2")
     public String foundItemsSortedV2(
             @RequestParam(required = false, defaultValue = "CreationDate") String sortBy,
@@ -363,28 +432,28 @@ messageService.add(message);
         return "redirect:web/V2/loginV2";
     }
 
-    @RequestMapping("/test-site3")
-    public String allItemsV2(Model model) {
 
 
-        List<Item> foundItems = itemsFoundService.findAll();
-        List<Item> lostItems = itemsLostService.findAll();
-        Map<Item, String> combinedItems = new HashMap<>();
-
-        for (Item item : foundItems) {
-            combinedItems.put(item, "found");
+    @RequestMapping({ "/"})
+    public String allItemsV2(
+            Model model,
+           @ModelAttribute("searchForm") SearchSortForm searchSortForm,
+            BindingResult result,
+            @RequestParam(required = false, defaultValue = "") String searchPhrase,
+            @RequestParam(required = false, defaultValue = "date") String sortBy,
+            @RequestParam(required = false, defaultValue = "desc") String sortOrder,
+            @RequestParam(required = false, defaultValue = "true") String filter
+    ) {
+        //System.out.printf("searchPhrase = [%s], sortBy = [%s], sortOrder = [%s], filter = [%s]%n", searchPhrase, sortBy, sortOrder, filter);
+        boolean filtered = (!Objects.equals(filter, "false"));
+        model.addAttribute("items", combinedItemsService.searchAndSort(searchPhrase, sortBy, (sortOrder.equals("desc")), filtered));
+        model.addAttribute("formAction", "/");
+        model.addAttribute("filtered", filtered);
+        model.addAttribute("usersMap", getUsersMap());
+        if (result.hasErrors()) {
+            System.out.println(result);
+            return "web/V2/indexV2";
         }
-
-        for (Item item : lostItems) {
-            combinedItems.put(item, "lost");
-        }
-        model.addAttribute("allItems", combinedItems);
-
-        Map<Integer, String> userIdToUsernameMap = usersService.findAll() // Add a method to fetch all users
-                .stream()
-                .collect(Collectors.toMap(User::UserId, User::Username));
-
-        model.addAttribute("userMap", userIdToUsernameMap);
         return "web/V2/indexV2";
     }
 

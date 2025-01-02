@@ -90,7 +90,7 @@
 
 
 <body id="page-top">
-<div id="wrapper">
+<div id="wrapper" style="max-height: 100vh">
     <nav th:replace = "web/V2/templateV2 :: #left-nav-bar" class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
 
     </nav>
@@ -106,7 +106,7 @@
                         <p class="text-primary m-0 fw-bold">Add Found Item</p>
                     </div>
                     <div class="card-body">
-                        <form th:action="@{/create-found}" th:object="${itemForm}" method="post">
+                        <form th:action="@{/create-found}" th:object="${itemForm}" method="post" enctype="multipart/form-data">
                             <div class="row">
 
                                 <div class="col-md-6">
@@ -126,12 +126,13 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="eventDate" class="form-label"><strong>Event Date</strong></label>
-                                        <input id="eventDate" type="datetime-local" th:field="*{eventDate}" class="form-control" required />
+                                        <input id="eventDate" type="date" th:field="*{eventDate}" class="form-control" required />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="imageUrl" class="form-label"><strong>Image URL</strong></label>
+                                        <input id="imageFile" type="file" accept="image/*" th:field="*{imageFile}" class="form-control" />
                                         <input id="imageUrl" type="text" th:field="*{imageUrl}" class="form-control" />
                                     </div>
                                 </div>

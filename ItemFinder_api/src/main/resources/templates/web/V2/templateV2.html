@@ -13,10 +13,11 @@
 </head>
 
 <body id="page-top">
-<div id="wrapper">
-    <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-1 navbar-dark p-0  " id="left-nav-bar" th:fragment = "nav" style="width: auto !important;">
+<div id="wrapper" style="max-height: 100vh">
+
+    <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-1 navbar-dark p-0 d-none d-sm-block" id="left-nav-bar" th:fragment="nav" style="width: auto !important;">
         <div class="container-fluid d-flex flex-column p-0">
-            <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0 p-1" href="/test-site3">
+            <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0 p-1" href="/">
             <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-map-marked"></i></div>
             <div class="sidebar-brand-text mx-3 fs-4"><span>ItemFinder</span></div>
         </a>
@@ -27,9 +28,10 @@
                 <li class="nav-item"><a class="nav-link  fs-6" href="/lost-itemsV2"><i class="fas fa-list"></i><span>Lost Items</span></a></li>
                 <li class="nav-item"><a class="nav-link fs-6" href="/add-lostV2"><i class="fas fa-thumbs-down"></i><span>Lost it</span></a></li>
                 <li class="nav-item"><a class="nav-link  fs-6" href="/add-foundV2"><i class="fas fa-thumbs-up"></i><span>Found it</span></a></li>
+                <li class="nav-item"><a class="nav-link  fs-6" href="https://info.itemfinder.net" target="_blank"><i class="fas fa-info"></i><span>Info</span></a></li>
 
             </ul>
-            <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+<!--            <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>-->
         </div>
     </nav>
 
@@ -40,6 +42,12 @@
         <div id="content">
             <nav id="top-nav-bar" th:fragment = "nav" class="navbar navbar-expand bg-white shadow mb-4 topbar">
                 <div class="container-fluid">
+                    <button class="btn btn-primary d-md-none" id="sidebarToggleSmall" type="button">☰</button>
+                    <script>
+                        document.getElementById('sidebarToggleSmall').addEventListener('click', function() {
+                            document.getElementById('left-nav-bar').classList.toggle('d-none');
+                        });
+                    </script>
 
                     <ul class="navbar-nav flex-nowrap ms-auto">
 
@@ -91,9 +99,8 @@
     </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
 </div>
 <script src="bootstrap/js/bootstrap.min.js"></script>
-<script src="js/chart.min.js"></script>
 <script src="js/bs-init.js"></script>
-<script src="js/theme.js"></script>
+<!--<script src="js/theme.js"></script>-->
 </body>
 
 </html>

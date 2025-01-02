@@ -57,4 +57,12 @@ public class ItemsLostServiceV1 {
     public List<Item> getSortedItems(String sortBy, String order) {
         return itemsLostRepository.findAllSorted(sortBy, order);
     }
+    public List<Item> searchAndSort(String searchPhrase, String orderBy, boolean descending, boolean filtered) {
+        String orderByColumn = switch (orderBy) {
+            case "created" -> "CreationDate";
+            case "name" -> "ItemName";
+            default -> "EventDate";
+        } ;
+        return itemsLostRepository.searchAndSort(searchPhrase, orderByColumn, descending, filtered);
+    }
 }

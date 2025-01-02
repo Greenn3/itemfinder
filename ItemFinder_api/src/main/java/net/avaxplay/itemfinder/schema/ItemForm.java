@@ -1,5 +1,7 @@
 package net.avaxplay.itemfinder.schema;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.time.LocalDateTime;
 
 public class ItemForm {
@@ -12,9 +14,18 @@ public class ItemForm {
     private Integer helperId;
     private Double latitude;
     private Double longitude;
+    private MultipartFile imageFile;
   //  private String locationText = "";
 
     public ItemForm() {
+    }
+
+    public MultipartFile getImageFile() {
+        return imageFile;
+    }
+
+    public void setImageFile(MultipartFile imageFile) {
+        this.imageFile = imageFile;
     }
 
     public Integer getCreatorId() {

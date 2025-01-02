@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Dashboard - ItemFinder</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" href="fonts/fontawesome-all.min.css">
+</head>
+
+<body id="page-top">
+<div id="wrapper"  style="max-height: 100vh">
+
+    <nav  th:include = "~{web/V2/templateV2 :: #left-nav-bar}"  class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
+
+    </nav>
+    <div class="d-flex flex-column" id="content-wrapper">
+        <div id="content">
+            <nav th:include = "~{web/V2/templateV2 :: #top-nav-bar}" class="navbar navbar-expand bg-white shadow mb-4 topbar">
+
+            </nav>
+            <div class="container">
+                <div class="row">
+
+                    <div class="container-fluid mt-4 ">
+                        <div class="row">
+                            <div class="col-md-4 mb-5 justify-content-center" th:each="item : ${allItems.keySet()}">
+
+                                <div class="card shadow border-bottom-primary p-2" style="height: 475px;">
+                                    <div class="row g-0 justify-content-center text-center">
+                                        <a th:href="${allItems[item] == 'lost' ? '/lost-itemsV2/' + item.ItemId : '/found-itemsV2/' + item.ItemId}" class="text-decoration-none">
+                                            <div class="col">
+                                                <img th:src="${item.ImageUrlOrDummy}" alt="Item image" class="img-fluid mb-3 image-class" style="width: 70%; margin: 5%;">
+                                                <div class="card-body justify-content-center text-center align-self-center align-content-center">
+                                                    <h3 class="item-name h3 text-primary-emphasis" th:text="${item.ItemName}"></h3>
+                                                    <!-- Updated Section -->
+                                                    <div class="text-start mx-auto d-flex flex-column align-items-start m-3 fs-6 text-secondary">
+                                                        <span th:text="'Posted by: ' + ${userMap[item.CreatorId()]}"></span>
+                                                        <!--                                ${#temporals.format(item.EventDate(), 'yyyy-MM-dd HH:mm')}-->
+                                                        <span th:text="'Found on: ' + ${#temporals.format(item.EventDate(), 'yyyy-MM-dd HH:mm')}"></span>
+                                                        <span th:if="${item.LocationText()}" th:text="'Found in: ' + ${item.LocationText()}"></span>
+
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="bg-white sticky-footer">
+            <div class="container my-auto">
+                <div class="text-center my-auto copyright"><span>Copyright © ItemFinder 2024</span></div>
+            </div>
+        </footer>
+    </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+</div>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="js/chart.min.js"></script>
+<script src="js/bs-init.js"></script>
+<script src="js/theme.js"></script>
+</body>
+
+</html>
