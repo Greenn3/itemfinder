@@ -25,7 +25,7 @@
       <nav  th:replace = "web/V2/templateV2 :: #top-nav-bar" class="navbar navbar-expand bg-white shadow mb-4 topbar">
       </nav>
 
-      <div class="container mx-0 px-0 w-100">
+      <div class="container mx-0 px-0 w-100" style="max-width: 100%">
         <div  class=" card d-flex  shadow p-2 sm-w-90 mx-2 my-0  ">
 
 
@@ -34,7 +34,7 @@
         <div class = "col-sm-6" >
           <div class=" input-group p-2">
             <label for="search-input"></label>
-            <input class="bg-light  border-1 small form-control" id="search-input" type="text" placeholder="Search for items..." th:field="*{searchPhrase}">
+            <input class="bg-light  border-1 small form-control" id="search-input" type="text" th:placeholder="#{search.placeholder}" th:field="*{searchPhrase}">
             <button class="btn btn-primary py-0 mr-5" type="submit">
               <i class="fas fa-search"></i>
             </button>
@@ -44,25 +44,37 @@
           <div class=" input-group p-2">
             <label for="sortType"></label>
             <select class="border-1 bg-light small form-control" id="sortType" th:field="*{sortBy}">
-              <option value="date" selected>Date</option>
-              <option value="name">Name</option>
-              <option value="created">Created</option>
+              <option value="date" selected th:text="#{search.date}"></option>
+              <option value="name" th:text="#{search.name}"></option>
+              <option value="created" th:text="#{search.created}"></option>
             </select>
             <label for="sortOrder"></label>
             <select class="border-1 bg-light small form-control" id="sortOrder" th:field="*{sortOrder}">
               <option value="desc" selected>⬇️</option>
               <option value="asc">⬆️</option>
             </select>
-            <button class="btn btn-primary" type="submit">Sort</button>
+            <button class="btn btn-primary" type="submit" th:text="#{sort.button}">Sort</button>
           </div>
         </div>
       </div>
     </form>
 
     <div >
-      <span id="items-count" th:text="${items.size()} + ' items found'"></span>
+      <span id="items-count" th:text=" #{items.found} + ${items.size()}"></span>
+      <button
+              class="btn-primary btn"
+              th:onclick="'setFiltered(' + ${!filtered} + ')'"
+              th:text="${filtered} ? #{button.showCompleted} : #{button.hideCompleted}">
+      </button>
+      <script>
+        function setFiltered(filtered) {
+          const url = new URL(window.location.href);
+          url.searchParams.set("filter", filtered);
+          window.location.href = url.toString();
+        }
+      </script>
 
-      <button class= "btn btn-secondary small"id="button-clear" onclick="clearUrlParams()">Clear</button>
+      <button class= "btn btn-secondary small"id="button-clear" onclick="clearUrlParams()" th:text="#{clear.button}"></button>
       <script>
         function clearUrlParams() {
           window.location.href = window.location.origin + window.location.pathname;
@@ -90,8 +102,9 @@
                               <div class="text-start mx-auto d-flex flex-column align-items-start m-3 fs-6 text-secondary">
                                 <span th:text="'Posted by: ' + ${userMap[item.CreatorId()]}"></span>
 <!--                                ${#temporals.format(item.EventDate(), 'yyyy-MM-dd HH:mm')}-->
-                                <span th:text="'Found on: ' + ${#temporals.format(item.EventDate(), 'yyyy-MM-dd HH:mm')}"></span>
-                                <span th:if="${item.LocationText()}" th:text="'Found in: ' + ${item.LocationText()}"></span>
+                                <span th:text="'Found on: ' + ${#temporals.format(item.EventDate(), 'yyyy-MM-dd')}"></span>
+
+                                <span th:if="${item.LocationText() != null and item.LocationText() != ''}" th:text="'Found in: ' + ${item.LocationText()}"></span>
 
 
                               </div>

@@ -1,5 +1,6 @@
 package net.avaxplay.itemfinder.config;
 
+import jakarta.servlet.http.HttpServletResponse;
 import net.avaxplay.itemfinder.auth.DataBaseUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,15 +26,28 @@ public class SecurityConfig {
     }
 
     @Bean
-    @Order(2)
+    @Order(1)
     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-
-                .securityMatcher("/api/v1/**")
+                .securityMatcher("/api/**")
                 .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().authenticated()
+                        .requestMatchers("/api/v1/**").permitAll()
+                        .requestMatchers("/api/v2/**").authenticated()
+                        .anyRequest().denyAll()
                 )
                 .httpBasic(Customizer.withDefaults())
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            // Return 401 Unauthorized when authentication fails
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            // Return 403 Forbidden when access is denied
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                            //request.getRequestDispatcher("/api/bad-version").forward(request, response);
+                        })
+                )
+                .csrf(csrf -> csrf.disable())
         ;
         return http.build();
     }
@@ -52,7 +66,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    @Order(1)
+
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable()) // Disables CSRF protection; enable if needed

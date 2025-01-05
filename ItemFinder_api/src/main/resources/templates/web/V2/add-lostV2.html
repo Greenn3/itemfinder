@@ -99,7 +99,7 @@
             <main id="main-main" class="container my-5">
                 <div class="card shadow mb-3">
                     <div class="card-header py-3">
-                        <p class="text-primary m-0 fw-bold">Add Lost Item</p>
+                        <p class="text-primary m-0 fw-bold" th:text="#{add.lost.item.label}"></p>
                     </div>
                     <div class="card-body">
                         <form th:action="@{/create-lost}" th:object="${itemForm}" method="post" enctype="multipart/form-data">
@@ -112,27 +112,27 @@
 <!--                                </div>-->
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="itemName" class="form-label"><strong>Item Name</strong></label>
+                                        <label for="itemName" class="form-label"><strong th:text="#{item.name.label}"></strong></label>
                                         <input id="itemName" type="text" th:field="*{itemName}" class="form-control" required />
                                     </div>
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="itemDescription" class="form-label"><strong>Item Description</strong></label>
+                                <label for="itemDescription" class="form-label"><strong th:text="#{item.description.label}"></strong></label>
                                 <textarea id="itemDescription" th:field="*{itemDescription}" class="form-control"></textarea>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="eventDate" class="form-label"><strong>Event Date</strong></label>
-                                        <input id="eventDate" type="date" th:field="*{eventDate}" class="form-control" required />
+                                        <label for="eventDate" class="form-label"><strong th:text="#{event.date.label}"></strong></label>
+                                        <input id="eventDate" type="datetime-local" th:field="*{eventDate}" class="form-control" required />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="imageUrl" class="form-label"><strong>Image URL</strong></label>
+                                        <label for="imageUrl" class="form-label"><strong th:text="#{image.url.label}"></strong></label>
                                         <input id="imageFile" type="file" accept="image/*" th:field="*{imageFile}" class="form-control" />
                                         <input id="imageUrl" type="text" th:field="*{imageUrl}" class="form-control" />
                                     </div>
@@ -140,7 +140,7 @@
                                 <div class = "row">
                                     <div class = "col-md-6">
                                         <div class="mb-3">
-                                            <label for="location-text" class="form-label"><strong>Location</strong></label>
+                                            <label for="location-text" class="form-label"><strong th:text="#{location.label}"></strong></label>
                                             <input id="location-text" type="text" th:field="*{locationText}" class="form-control" />
                                         </div>
                                     </div>
@@ -151,8 +151,7 @@
 
                             <div class="row">
                                 <div class="col-md-6 d-flex align-items-center">
-                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#mapModal">
-                                        Show Location in Map
+                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#mapModal" th:text="#{show.location.on.map.button}">
                                     </button>
                                 </div>
                             </div>
@@ -162,7 +161,7 @@
                             <input id="longitude" type="hidden" th:field="*{longitude}" />
 
                             <div class="mb-3">
-                                <button type="submit" class="btn btn-primary btn-sm mt-2">Submit</button>
+                                <button type="submit" class="btn btn-primary btn-sm mt-2" th:text="#{submit.button}"></button>
                             </div>
                         </form>
                     </div>
@@ -174,15 +173,15 @@
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="mapModalLabel">Select Location</h5>
+                            <h5 class="modal-title" id="mapModalLabel" th:text="#{select.location.button}"></h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div id="map" ></div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" id="saveLocation" class="btn btn-primary" data-bs-dismiss="modal">Save Location</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{close.button}"></button>
+                            <button type="button" id="saveLocation" class="btn btn-primary" data-bs-dismiss="modal" th:text="#{save.location.button}"></button>
                         </div>
                     </div>
                 </div>

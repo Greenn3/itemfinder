@@ -32,7 +32,7 @@ public class CombinedItemsService {
     }
 
     public List<CombinedItem> searchAndSort(String searchPhrase, String orderBy, boolean descending, boolean filtered) {
-        System.out.printf("searchPhrase = [%s], sortBy = [%s], descending = [%b], filtered = [%b]%n", searchPhrase, orderBy, descending, filtered);
+        //System.out.printf("searchPhrase = [%s], sortBy = [%s], descending = [%b], filtered = [%b]%n", searchPhrase, orderBy, descending, filtered);
         String orderByColumn = switch (orderBy) {
             case "created" -> "CreationDate";
             case "name" -> "ItemName";

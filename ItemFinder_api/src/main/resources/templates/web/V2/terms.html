@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Dashboard - ItemFinder</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" href="fonts/fontawesome-all.min.css">
+    <style>
+        .image-class{
+            aspect-ratio: 16/12;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+<div id="wrapper"  style="max-height: 100vh">
+    <nav  th:replace = "web/V2/templateV2 :: #left-nav-bar"  >
+    </nav>
+    <div class="d-flex flex-column" id="content-wrapper">
+        <div id="content">
+            <nav  th:replace = "web/V2/templateV2 :: #top-nav-bar" class="navbar navbar-expand bg-white shadow mb-4 topbar">
+            </nav>
+
+            <div class="container mx-0 px-0 w-100 d-flex justify-content-center " style="max-width: 100%">
+<div class="card mx-5 p-2  custom-width-80  ">
+    <p class="fw-bold fs-5">
+                Regulamin Wirtualnego Biura Rzeczy Znalezionych – ItemFinder
+    </p>
+    <p class="fw-bold">
+                §1. Postanowienia ogólne
+    </p>
+    <p>
+
+                Regulamin określa zasady korzystania z platformy ItemFinder – Wirtualnego Biura Rzeczy Znalezionych, dostępnego pod adresem [tu wprowadź adres strony/aplikacji].
+                Administratorem serwisu jest [tu podaj dane administratora, np. nazwa firmy/organizacji, adres e-mail].
+                Użytkownik, rejestrując się w serwisie lub korzystając z niego, akceptuje niniejszy regulamin.
+                Celem platformy jest ułatwienie odnalezienia zgubionych rzeczy oraz zgłaszania przedmiotów znalezionych przez użytkowników.
+    </p>
+    <p class="fw-bold">
+                §2. Definicje
+    </p>
+    <p>
+                Platforma – serwis internetowy ItemFinder.
+                Administrator – osoba lub podmiot zarządzający platformą.
+                Użytkownik – każda osoba korzystająca z platformy.
+                Przedmiot znaleziony – rzecz zgłoszona przez użytkownika jako znaleziona.
+                Przedmiot zgubiony – rzecz zgłoszona przez użytkownika jako zgubiona.
+    </p>
+    <p class="fw-bold">
+                §3. Zakres działania
+    </p>
+    <p>
+
+                Platforma umożliwia:
+                Dodawanie ogłoszeń o zgubionych przedmiotach.
+                Dodawanie ogłoszeń o znalezionych przedmiotach.
+                Przeglądanie bazy zgłoszeń.
+                Kontakt między użytkownikami w celu ustalenia odbioru przedmiotu.
+                Platforma nie przechowuje fizycznie zgubionych lub znalezionych rzeczy.
+    </p>
+    <p class="fw-bold">
+
+                §4. Obowiązki użytkowników
+    </p>
+    <p>
+
+                Użytkownik zobowiązany jest do podawania prawdziwych informacji dotyczących zgubionych lub znalezionych rzeczy.
+                Użytkownik nie może zgłaszać rzeczy, które:
+                Nie zostały rzeczywiście znalezione.
+                Są nielegalne (np. narkotyki, broń).
+                Są objęte zakazem obrotu lub wymagają specjalnych zezwoleń.
+                Użytkownik zobowiązuje się do odpowiedzialnego korzystania z platformy, w tym nieumieszczania treści wulgarnych, obraźliwych lub wprowadzających w błąd.
+    </p>
+    <p class="fw-bold">
+                §5. Obowiązki administratora
+    </p>
+    <p>
+
+                Administrator zapewnia techniczne funkcjonowanie platformy oraz pomoc techniczną użytkownikom.
+                Administrator zastrzega sobie prawo do:
+                Usuwania zgłoszeń, które naruszają regulamin lub przepisy prawa.
+                Zawieszenia konta użytkownika, który narusza regulamin.
+                Administrator nie odpowiada za autentyczność informacji podawanych przez użytkowników ani za rzeczywiste przekazanie zgubionych/zależnych przedmiotów.
+    </p>
+    <p class="fw-bold">
+                §6. Prywatność i ochrona danych osobowych
+    </p>
+    <p>
+                Administrator przetwarza dane osobowe użytkowników zgodnie z obowiązującymi przepisami prawa oraz Polityką Prywatności.
+                Dane osobowe podawane przez użytkowników są wykorzystywane wyłącznie w celu realizacji funkcji platformy.
+                Użytkownik ma prawo wglądu do swoich danych, ich edycji oraz żądania ich usunięcia.
+    </p>
+    <p class="fw-bold">
+                §7. Zgłaszanie przedmiotów znalezionych i zgubionych
+    </p>
+    <p>
+                Zgłoszenie przedmiotu zgubionego/zależnego wymaga podania następujących informacji:
+                Krótki opis przedmiotu (np. rodzaj, kolor, marka).
+                Miejsce i data zgubienia/znalezienia.
+                Dane kontaktowe użytkownika (opcjonalnie).
+                Administrator ma prawo weryfikować zgłoszenia pod kątem zgodności z regulaminem.
+    </p>
+    <p class="fw-bold">
+                §8. Zasady kontaktu i odbioru przedmiotów
+    </p>
+    <p>
+                Kontakt między użytkownikami odbywa się wyłącznie za pośrednictwem platformy.
+                Przekazanie zgubionego przedmiotu odbywa się poza platformą, w uzgodnionym miejscu i terminie.
+                Użytkownicy są odpowiedzialni za ustalenie tożsamości właściciela przedmiotu.
+    </p>
+    <p class="fw-bold">
+                §9. Odpowiedzialność
+    </p>
+    <p>
+                Administrator nie ponosi odpowiedzialności za:
+                Treści umieszczane przez użytkowników.
+                Szkody wynikłe z nieprawidłowego działania platformy.
+                Nieuczciwe działania użytkowników.
+                Platforma służy wyłącznie jako pośrednik w wymianie informacji o zgubionych i znalezionych rzeczach.
+    </p>
+    <p class="fw-bold">
+                §10. Postanowienia końcowe
+    </p>
+    <p>
+                Regulamin wchodzi w życie z dniem publikacji na stronie platformy.
+                Administrator zastrzega sobie prawo do zmiany regulaminu, o czym użytkownicy zostaną poinformowani z co najmniej 14-dniowym wyprzedzeniem.
+                W sprawach nieuregulowanych niniejszym regulaminem mają zastosowanie przepisy prawa polskiego.
+    </p>
+</div>
+            </div>
+
+
+
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © ItemFinder 2024</span></div>
+                </div>
+            </footer>
+            <script src="bootstrap/js/bootstrap.min.js"></script>
+            <script src="js/chart.min.js"></script>
+            <script src="js/bs-init.js"></script>
+            <script src="js/theme.js"></script>
+        </div>
+    </div>
+</div>
+</body>
+
+
+</html>

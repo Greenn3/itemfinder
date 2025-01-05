@@ -300,38 +300,38 @@ messageService.add(message);
         return "web/V2/lost-itemsV2";
     }
 
-
-    @RequestMapping("/found-itemsSortedV2")
-    public String foundItemsSortedV2(
-            @RequestParam(required = false, defaultValue = "CreationDate") String sortBy,
-            @RequestParam(required = false, defaultValue = "asc") String order,
-            Model model) {
-
-        // Fetch sorted items from the service layer
-        List<Item> sortedItems = itemsFoundService.getSortedItems(sortBy, order);
-
-        // Add sorted items to the model
-        model.addAttribute("items", sortedItems);
-
-        // Return the Thymeleaf view
-        return "web/V2/found-itemsV2";
-    }
-
-    @RequestMapping("/lost-itemsSortedV2")
-    public String lostItemsSortedV2(
-            @RequestParam(required = false, defaultValue = "CreationDate") String sortBy,
-            @RequestParam(required = false, defaultValue = "asc") String order,
-            Model model) {
-
-        // Fetch sorted items from the service layer
-        List<Item> sortedItems = itemsLostService.getSortedItems(sortBy, order);
-
-        // Add sorted items to the model
-        model.addAttribute("items", sortedItems);
-
-        // Return the Thymeleaf view
-        return "web/V2/found-itemsV2";
-    }
+//
+//    @RequestMapping("/found-itemsSortedV2")
+//    public String foundItemsSortedV2(
+//            @RequestParam(required = false, defaultValue = "CreationDate") String sortBy,
+//            @RequestParam(required = false, defaultValue = "asc") String order,
+//            Model model) {
+//
+//        // Fetch sorted items from the service layer
+//        List<Item> sortedItems = itemsFoundService.getSortedItems(sortBy, order);
+//
+//        // Add sorted items to the model
+//        model.addAttribute("items", sortedItems);
+//
+//        // Return the Thymeleaf view
+//        return "web/V2/found-itemsV2";
+//    }
+//
+//    @RequestMapping("/lost-itemsSortedV2")
+//    public String lostItemsSortedV2(
+//            @RequestParam(required = false, defaultValue = "CreationDate") String sortBy,
+//            @RequestParam(required = false, defaultValue = "asc") String order,
+//            Model model) {
+//
+//        // Fetch sorted items from the service layer
+//        List<Item> sortedItems = itemsLostService.getSortedItems(sortBy, order);
+//
+//        // Add sorted items to the model
+//        model.addAttribute("items", sortedItems);
+//
+//        // Return the Thymeleaf view
+//        return "web/V2/found-itemsV2";
+//    }
 
 
 
@@ -368,10 +368,10 @@ messageService.add(message);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
-        System.out.println("id: " +((UserPrincipal) authentication.getPrincipal()).getId());// Assuming your UserDetails implementation includes an ID
+        //System.out.println("id: " +((UserPrincipal) authentication.getPrincipal()).getId());// Assuming your UserDetails implementation includes an ID
         Integer userId = userDetails.getId();
         List<Message> messages = messageService.findByItemId(id);
-        System.out.println("Messages for itemId " + id + ": " + messages);
+        //System.out.println("Messages for itemId " + id + ": " + messages);
         // Add the item and the creator's name to the model
         model.addAttribute("item", item);
         model.addAttribute("creatorName", creatorName);
@@ -419,16 +419,13 @@ messageService.add(message);
     }
     @RequestMapping("/registerV2")
     public String registerV2(Model model) {
-        System.out.println("here2");
         model.addAttribute("users", usersService.findAll());
         model.addAttribute("addUser", new UserNew(null, null));
         return "web/V2/registerV2";
     }
     @PostMapping("/create-userV2")
     public String createUserV2(@ModelAttribute("addUser") UserNew userNew) {
-        System.out.println("here");
         usersService.create(userNew);
-        System.out.println(userNew);
         return "redirect:web/V2/loginV2";
     }
 
@@ -455,6 +452,11 @@ messageService.add(message);
             return "web/V2/indexV2";
         }
         return "web/V2/indexV2";
+    }
+
+   @RequestMapping("/terms")
+    public String terms(){
+        return "web/V2/terms";
     }
 
 }

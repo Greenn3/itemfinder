@@ -24,11 +24,14 @@
             <hr class="sidebar-divider my-0">
             <ul class="navbar-nav text-light" id="accordionSidebar">
 
-                <li class="nav-item"><a class="nav-link  fs-6" href="/found-itemsV2"><i class="fas fa-list-ol"></i><span>Found Items</span></a></li>
-                <li class="nav-item"><a class="nav-link  fs-6" href="/lost-itemsV2"><i class="fas fa-list"></i><span>Lost Items</span></a></li>
-                <li class="nav-item"><a class="nav-link fs-6" href="/add-lostV2"><i class="fas fa-thumbs-down"></i><span>Lost it</span></a></li>
-                <li class="nav-item"><a class="nav-link  fs-6" href="/add-foundV2"><i class="fas fa-thumbs-up"></i><span>Found it</span></a></li>
+                <li class="nav-item"><a class="nav-link  fs-6" href="/found-itemsV2"><i class="fas fa-list-ol"></i><span th:text="#{found.items.link}"></span></a></li>
+                <li class="nav-item"><a class="nav-link  fs-6" href="/lost-itemsV2"><i class="fas fa-list"></i><span th:text="#{lost.items.link}"></span></a></li>
+                <li class="nav-item"><a class="nav-link fs-6" href="/add-lostV2"><i class="fas fa-thumbs-down"></i><span th:text="#{lost.it.link}"></span></a></li>
+                <li class="nav-item"><a class="nav-link  fs-6" href="/add-foundV2"><i class="fas fa-thumbs-up"></i><span th:text="#{found.it.link}"></span></a></li>
                 <li class="nav-item"><a class="nav-link  fs-6" href="https://info.itemfinder.net" target="_blank"><i class="fas fa-info"></i><span>Info</span></a></li>
+                <li class="nav-item"><a class="nav-link  fs-6" href="/terms" target="_blank"><i class="fas fa-info"></i><span th:text="#{terms.link}"></span></a></li>
+
+
 
             </ul>
 <!--            <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>-->
@@ -50,6 +53,11 @@
                     </script>
 
                     <ul class="navbar-nav flex-nowrap ms-auto">
+<li class="p-2 text-decoration-none text-secondary">
+    <a  class="text-decoration-none"  href="?lang=en">EN</a>
+    <a class="text-decoration-none"  href="?lang=pl">PL</a>
+
+</li>
 
 
                         <div class="d-none d-sm-block topbar-divider"></div>
@@ -63,8 +71,8 @@
                                 <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
 
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="/logout" methods="post">
-                                        <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                    <a class="dropdown-item" href="/logout" methods="post" th:text="#{logout.button}">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i></a>
 
                                 </div>
                             </div>
@@ -77,8 +85,8 @@
                                 <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
 
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="/login" methods="post">
-                                        <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
+                                    <a class="dropdown-item" href="/login" methods="post" th:text="#{login.button}">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp</a>
 
                                 </div>
                             </div>

@@ -85,26 +85,42 @@
                             </div>
                             <!-- Item Information -->
                             <div class="col-md-7">
-                                <h2 class="card-title" th:text="${item.ItemName}">Item Name</h2>
-                                <p class="card-text" th:text="${item.ItemDescriptionOrEmpty}">Short description of the item.</p>
-                                <p class="card-text">
-                                    <strong>Creator:</strong> <span th:text="${creatorName}">Creator Name</span>
-                                </p>
-                                <p class="card-text"><strong>Creator ID:</strong> <span th:text="${item.CreatorId}">Creator ID</span></p>
-                                <p class="card-text">Lost on <span th:text="${item.EventDate()}"> </span></p>
-                                <p class="card-text">Added on <span th:text="${item.CreationDate()}"> </span></p>
-                                <p class="card-text" th:if="${item.LocationText() != null and item.LocationText() != ''}">
-                                    Lost in <span th:text="${item.LocationText()}"></span>
-                                </p>
+                                <h2 class="card-title fs-4 fw-bold" th:text="${item.ItemName}">Item Name</h2>
+                                <p class="card-text fs-5" th:text="${item.ItemDescriptionOrEmpty}">Short description of the item.</p>
+                                <div class="row">
+
+                                    <div class="col-md-6 fs-5">
+                                        <p class="card-text">
+                                            <strong th:text="#{creator.label}"></strong> <span th:text="${creatorName}"></span>
+                                        </p>
+                                    </div>
+
+                                    <p class="card-text fs-5">
+                                        <strong th:text="#{lost.on.label}"></strong>
+                                        <span th:text="${#temporals.format(item.EventDate(), 'yyyy-MM-dd')}"></span>
+                                    </p>
+                                    <p class="card-text fs-5">
+                                        <strong th:text="#{added.on.label}"></strong>
+                                        <span th:text="${#temporals.format(item.CreationDate(), 'yyyy-MM-dd')}"></span>
+                                    </p>
+
+                                    <!-- Location -->
+                                    <div class="col-md-6 fs-5">
+                                        <p class="card-text" th:if="${item.LocationText() != null and item.LocationText() != ''}">
+                                            <strong th:text="#{found.in.label}">Found in:</strong> <span th:text="${item.LocationText()}"></span>
+                                        </p>
+                                    </div>
+
+                                </div>
                                 <!-- Button to Open Modal -->
-                                <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#messageModal">
-                                    I found it!
+                                <button th:if = "${#authentication.name != creatorName}" type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#messageModal" th:text="#{i.found.it.button}">
+
                                 </button>
 
                                 <!-- Owner Panel Button -->
                                 <div class="my-lg-5"></div> <!-- Adds vertical space -->
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ownerPanelModal">
-                                    <i class="fas fa-arrow-up"></i> Owner Panel
+                                <button th:if = "${#authentication.name == creatorName}" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ownerPanelModal">
+                                    <i class="fas fa-arrow-up" th:text="#{owner.panel.button}"></i>
                                 </button>
                             </div>
 
@@ -113,16 +129,15 @@
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="ownerPanelModalLabel">Owner Panel</h5>
+                                            <h5 class="modal-title" id="ownerPanelModalLabel" th:text="#{owner.panel.button}"></h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <h4>Welcome, Owner!</h4>
-                                            <p>Here are your controls:</p>
+
                                             <!-- Messages -->
-                                            <h5>Messages for this Item</h5>
+                                            <h5 th:text="#{messages.label}">Messages for this Item</h5>
                                             <div th:if="${#lists.isEmpty(messages)}">
-                                                <p>No messages found for this item.</p>
+                                                <p th:text="#{no.messages.label}">No messages found for this item.</p>
                                             </div>
                                             <div th:if="${!#lists.isEmpty(messages)}">
                                                 <ul>
@@ -137,7 +152,7 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{close.button}"></button>
                                         </div>
                                     </div>
 
@@ -145,12 +160,15 @@
                             </div>
                             <!-- Modal Structure -->
                             <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-dialog modal-dialog-centered p-2">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="messageModalLabel">Have you found this item?</h5>
-                                            <h6 class="modal-title">You can write a message to its owner.</h6>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <h5 class="modal-title px-2" id="messageModalLabel">
+                                                <p class="text-primary fw-bold" th:text="#{lost.message.modal1}"></p>
+                                                <p class="text-secondary" th:text="#{lost.message.modal2}"> </p>
+                                            </h5>
+
+
                                         </div>
                                         <div class="modal-body">
                                             <form th:action="@{/send-message}" method="post">
@@ -161,8 +179,8 @@
                                                 <input type="hidden" id="itemId" name="itemId" th:value="${item.ItemId()}">
 
                                                 <!-- Message Text -->
-                                                <div class="mb-3">
-                                                    <label for="messageText" class="form-label">Message Text</label>
+                                                <div class="">
+
                                                     <textarea id="messageText" name="messageText" class="form-control" rows="4" required></textarea>
                                                 </div>
                                                 <h6 class="modal-title"></h6>
@@ -172,8 +190,8 @@
 
 
                                                 <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary" th:text="#{send.button}"></button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{close.button}"></button>
                                                 </div>
                                             </form>
                                         </div>
@@ -183,10 +201,10 @@
                         </div>
                         <!-- Map Section -->
                         <div class="mt-4">
-                            <h3 class="text-center mb-4">Map</h3>
+                            <h3 class="text-center mb-4" th:text="#{map.label}"></h3>
                             <div id="map" th:if="${item.Latitude != null && item.Longitude != null}" th:data-lat="${item.Latitude}" th:data-lng="${item.Longitude}"></div>
-                            <div th:if="${item.Latitude == null || item.Longitude == null || item.Longitude()!=0 || item.Latitude()!=0}" class="text-center">
-                                <p>No coordinates provided.</p>
+                            <div th:if="${item.Latitude == null || item.Longitude == null || item.Longitude()==0 || item.Latitude()==0}" class="text-center">
+                                <p th:text="#{map.no.coords}"></p>
                             </div>
                         </div>
                     </div>
