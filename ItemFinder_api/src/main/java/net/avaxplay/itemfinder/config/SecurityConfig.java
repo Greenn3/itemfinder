@@ -92,8 +92,8 @@ public class SecurityConfig {
                                 "/lost-itemsV2/**",
                                 "/lost-item-singularV2/**",
                                 "/registerV2",
-                                "/lost-itemsSortedV2",
-                                "/found-itemsSortedV2",
+                                "/terms",
+
                         "/create-userV2")
                         .permitAll() // Allow everyone to access the index page
                         .anyRequest().authenticated()                                   // Require authentication for other requests

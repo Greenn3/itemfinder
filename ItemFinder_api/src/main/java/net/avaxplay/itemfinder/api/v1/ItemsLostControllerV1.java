@@ -5,18 +5,24 @@ import net.avaxplay.itemfinder.schema.Item;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/items/lost")
 public class ItemsLostControllerV1 {
     private final ItemsLostServiceV1 lostService;
+    private final ImageUploadService imageUploadService;
 
-    public ItemsLostControllerV1(ItemsLostServiceV1 lostService) {
+    public ItemsLostControllerV1(ItemsLostServiceV1 lostService, ImageUploadService imageUploadService) {
         this.lostService = lostService;
+        this.imageUploadService = imageUploadService;
     }
 
     @GetMapping("")
@@ -72,6 +78,21 @@ public class ItemsLostControllerV1 {
         List<Item> items = lostService.findByCreationDate(creationDate);
         if (items.isEmpty()) throw new ItemNotFoundException();
         return ResponseEntity.ok(items);
+    }
+    @PostMapping("/upload-image")
+    public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("file") MultipartFile file) {
+        try {
+            // Use the ImageUploadService to upload the file and get the path
+            String imagePath = imageUploadService.uploadLostImage(file);
+            // Return the path in a JSON response
+            Map<String, String> response = new HashMap<>();
+            response.put("image_path", imagePath);
+            return ResponseEntity.ok(response);
+        } catch (IOException e) {
+            // Handle any errors that occur during file upload
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Failed to upload image"));
+        }
     }
 
 
