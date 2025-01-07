@@ -49,57 +49,6 @@ private Map<Integer, String> getUsersMap() {
         return "web/template";
     }
 
-//    @PostMapping("/create-user")
-//    public String createUser(@ModelAttribute UserNew userNew) {
-//        usersService.create(userNew);
-//        return "redirect:/dynamic";
-//    }
-
-//    @RequestMapping("/dynamic")
-//    public String dynamic(Model model) {
-//        model.addAttribute("users", usersService.findAll());
-//        model.addAttribute("addUser", new UserNew(null, null));
-//        return "web/dynamic";
-//    }
-
-//    @RequestMapping("/lost-items")
-//    public String lostItems(Model model) {
-//        model.addAttribute("items", itemsLostService.findAll());
-//        return "web/lost-items";
-//    }
-
-//    @RequestMapping("/found-items")
-//    public String foundItems(Model model) {
-//        model.addAttribute("items", itemsFoundService.findAll());
-//        return "web/found-items";
-//    }
-
-//    @RequestMapping("/lost-items/{id}")
-//    public String lostItemId(Model model, @PathVariable Integer id) {
-//        Optional<Item> item = itemsLostService.findById(id);
-//        if (item.isEmpty()) return "web/item-not-found";
-//        model.addAttribute("item", item.get());
-//        return "web/lost-item-singular";
-//    }
-
-//    @RequestMapping("/found-items/{id}")
-//    public String foundItemId(Model model, @PathVariable Integer id) {
-//        System.out.println("here");
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal(); // Assuming your UserDetails implementation includes an ID
-//        Integer userId = userDetails.getId();
-//        Optional<Item> item = itemsFoundService.findById(id);
-//        if (item.isEmpty()) return "web/item-not-found";
-//
-//        List<Message> messages = messageService.findByItemId(id);
-//
-//        System.out.println("Messages for itemId " + id + ": " + messages);
-//
-//        model.addAttribute("item", item.get());
-//model.addAttribute("userId", userId);
-//        model.addAttribute("messages", messages);
-//        return "web/found-item-singular";
-//    }
 
     @RequestMapping("/map")
     public String showMap() {
@@ -224,22 +173,7 @@ messageService.add(message);
     }
 
 
-//    @RequestMapping("/test-site3")
-//    public String testSiteV2() {
-//        return "web/V2/indexV2";
-//    }
 
-
-//    @RequestMapping("/found-itemsV2-")
-//    public String foundItemsV2p(Model model) {
-//        List<Item> items = itemsFoundService.findAll();
-//        Map<Integer, String> userIdToUsernameMap = usersService.findAll() // Add a method to fetch all users
-//                .stream()
-//                .collect(Collectors.toMap(User::UserId, User::Username));
-//        model.addAttribute("items", items);
-//        model.addAttribute("userMap", userIdToUsernameMap);
-//        return "web/V2/found-itemsV2";
-//    }
     @RequestMapping("/found-itemsV2")
     public String foundItemsV2(
             Model model,
@@ -299,39 +233,6 @@ messageService.add(message);
         }
         return "web/V2/lost-itemsV2";
     }
-
-//
-//    @RequestMapping("/found-itemsSortedV2")
-//    public String foundItemsSortedV2(
-//            @RequestParam(required = false, defaultValue = "CreationDate") String sortBy,
-//            @RequestParam(required = false, defaultValue = "asc") String order,
-//            Model model) {
-//
-//        // Fetch sorted items from the service layer
-//        List<Item> sortedItems = itemsFoundService.getSortedItems(sortBy, order);
-//
-//        // Add sorted items to the model
-//        model.addAttribute("items", sortedItems);
-//
-//        // Return the Thymeleaf view
-//        return "web/V2/found-itemsV2";
-//    }
-//
-//    @RequestMapping("/lost-itemsSortedV2")
-//    public String lostItemsSortedV2(
-//            @RequestParam(required = false, defaultValue = "CreationDate") String sortBy,
-//            @RequestParam(required = false, defaultValue = "asc") String order,
-//            Model model) {
-//
-//        // Fetch sorted items from the service layer
-//        List<Item> sortedItems = itemsLostService.getSortedItems(sortBy, order);
-//
-//        // Add sorted items to the model
-//        model.addAttribute("items", sortedItems);
-//
-//        // Return the Thymeleaf view
-//        return "web/V2/found-itemsV2";
-//    }
 
 
 
@@ -457,6 +358,18 @@ messageService.add(message);
    @RequestMapping("/terms")
     public String terms(){
         return "web/V2/terms";
+    }
+
+    @RequestMapping("/delete-lost-item/{id}")
+    public String deleteListItem(@PathVariable Integer id){
+        itemsLostService.delete(id);
+        return "redirect:/lost-itemsV2";
+    }
+
+    @RequestMapping("/delete-found-item/{id}")
+    public String deleteFoundItem(@PathVariable Integer id){
+        itemsFoundService.delete(id);
+        return "redirect:/found-itemsV2";
     }
 
 }
