@@ -87,7 +87,7 @@ public class SecurityConfig {
                                 "/",
                                 "/found-itemsV2",
                                 "/found-itemsV2/**",
-                                "/found-item-singularV2",
+                                "/found-item-singularV2/**",
                                 "/lost-itemsV2",
                                 "/lost-itemsV2/**",
                                 "/lost-item-singularV2/**",
