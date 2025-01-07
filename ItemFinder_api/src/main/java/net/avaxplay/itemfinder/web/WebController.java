@@ -199,17 +199,7 @@ messageService.add(message);
     }
 
 
-    @RequestMapping("/lost-itemsV2p")
-    public String lostItemsV2p(Model model) {
-        List<Item> items = itemsLostService.findAll();
-        Map<Integer, String> itemsLostTUsernameMap = usersService.findAll()
-                .stream()
-                .collect(Collectors.toMap(User::UserId, User::Username));
 
-        model.addAttribute("items", items);
-        model.addAttribute("userMap", itemsLostTUsernameMap);
-        return "web/V2/lost-itemsV2";
-    }
     @RequestMapping("/lost-itemsV2")
     public String lostItemsV2(
             Model model,
@@ -371,6 +361,7 @@ messageService.add(message);
         itemsFoundService.delete(id);
         return "redirect:/found-itemsV2";
     }
+
 
 }
 

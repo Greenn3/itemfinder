@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Dashboard - ItemFinder</title>
+    <title>ItemFinder</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&display=swap">
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/fonts/fontawesome-all.min.css">
@@ -56,7 +56,7 @@
     </style>
 </head>
 
-<body id="page-top">
+<body >
 <div id="wrapper"  style="max-height: 100vh">
     <!-- Sidebar -->
     <nav id = "left-nav-bar" class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" th:replace="web/V2/templateV2 :: #left-nav-bar">
@@ -66,8 +66,8 @@
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
-    <div class="d-flex flex-column w-100" id="content">
-        <div >
+    <div  class="d-flex flex-column w-100" id="content">
+        <div id="page-top" >
             <!-- Topbar -->
             <nav id= "top-nav-bar"  th:replace = "web/V2/templateV2 :: #top-nav-bar" class="navbar navbar-expand bg-white shadow mb-4 topbar">
 
@@ -136,7 +136,40 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
+                                            <form th:action="@{/delete-found-item/{id}(id=${item.ItemId()})}" method="post" id="deleteForm">
+                                                <button type="button" class="btn btn-danger m-1" onclick="confirmDeletion()" th:text="#{delete.button}"></button>
+                                            </form>
 
+                                            <script th:inline="javascript">
+                                                /*<![CDATA[*/
+                                                var deleteConfirmationTitle = [[#{delete.confirmation.title}]];
+                                                var cancelButton = [[#{cancel.button}]];
+                                                var yesButton = [[#{yes.button}]];
+
+                                                /*]]>*/
+                                            </script>
+
+                                            <script>
+                                                function confirmDeletion() {
+
+                                                    Swal.fire({
+                                                        title: deleteConfirmationTitle,
+
+                                                        icon: 'warning',
+                                                        showCancelButton: true,
+                                                        cancelButtonText: cancelButton,
+                                                        confirmButtonColor: '#d33',
+                                                        cancelButtonColor: '#3085d6',
+                                                        confirmButtonText: yesButton
+                                                    }).then((result) => {
+                                                        if (result.isConfirmed) {
+                                                            document.getElementById('deleteForm').submit();
+                                                        }
+                                                    });
+                                                }
+                                            </script>
+
+                                            <div class="my-2 mx-1">
                                             <!-- Messages -->
                                             <h5 th:text="#{messages.label}"></h5>
                                             <div th:if="${#lists.isEmpty(messages)}">
@@ -153,6 +186,8 @@
                                                     </li>
                                                 </ul>
                                             </div>
+                                        </div>
+
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{close.button}"></button>
@@ -225,10 +260,12 @@
         <div class="text-center my-auto copyright"><span>Copyright © ItemFinder 2024</span></div>
     </div>
 </footer>
+<a class="border rounded d-inline scroll-to-top" href="#page-top" ><i class="fas fa-angle-up"></i></a>
 
 <!-- Scripts -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     // Set the "time" input to the current date and time

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Dashboard - ItemFinder</title>
+    <title>ItemFinder</title>
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="fonts/fontawesome-all.min.css">
@@ -16,7 +16,7 @@
     </style>
 </head>
 
-<body id="page-top">
+<body >
 <div id="wrapper"  style="max-height: 100vh">
     <nav  th:replace = "web/V2/templateV2 :: #left-nav-bar"  >
     </nav>
@@ -25,7 +25,7 @@
             <nav  th:replace = "web/V2/templateV2 :: #top-nav-bar" class="navbar navbar-expand bg-white shadow mb-4 topbar">
             </nav>
 
-            <div class="container mx-0 px-0 w-100 d-flex justify-content-center " style="max-width: 100%">
+            <div id="page-top" class="container mx-0 px-0 w-100 d-flex justify-content-center " style="max-width: 100%">
 <div class="card mx-5 p-2  custom-width-80  ">
     <p class="fw-bold fs-5">
                 Regulamin Wirtualnego Biura Rzeczy Znalezionych – ItemFinder
@@ -140,6 +140,9 @@
                     <div class="text-center my-auto copyright"><span>Copyright © ItemFinder 2024</span></div>
                 </div>
             </footer>
+
+            <a class="border rounded d-inline scroll-to-top" href="#page-top" ><i class="fas fa-angle-up"></i></a>
+
             <script src="bootstrap/js/bootstrap.min.js"></script>
             <script src="js/chart.min.js"></script>
             <script src="js/bs-init.js"></script>
