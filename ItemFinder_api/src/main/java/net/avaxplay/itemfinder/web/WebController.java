@@ -238,8 +238,26 @@ messageService.add(message);
         Optional<User> usersOptional = usersService.findById(item.CreatorId());
         String creatorName = usersOptional.map(User::Username).orElse("Unknown Creator");
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println( "auth: " +authentication);
+        System.out.println("Principal: " + authentication.getPrincipal());
+        if(!authentication.getPrincipal().equals("anonymousUser")){
+            UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
+            //System.out.println("id: " +((UserPrincipal) authentication.getPrincipal()).getId());// Assuming your UserDetails implementation includes an ID
+            Integer userId = userDetails.getId();
+            List<Message> messages = messageService.findByItemId(id);
+            model.addAttribute("userId", userId);
+            model.addAttribute("messages", messages);
+        }
+
+
+        //System.out.println("id: " +((UserPrincipal) authentication.getPrincipal()).getId());// Assuming your UserDetails implementation includes an ID
+
+
+
         model.addAttribute("item", item);
         model.addAttribute("creatorName", creatorName);
+
         return "web/V2/lost-item-singularV2";
     }
 
@@ -257,17 +275,24 @@ messageService.add(message);
         String creatorName = userOptional.map(User::Username).orElse("Unknown Creator");
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println( "auth: " +authentication);
+        System.out.println("Principal: " + authentication.getPrincipal());
+        if(!authentication.getPrincipal().equals("anonymousUser")){
+            UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
+            //System.out.println("id: " +((UserPrincipal) authentication.getPrincipal()).getId());// Assuming your UserDetails implementation includes an ID
+            Integer userId = userDetails.getId();
+            List<Message> messages = messageService.findByItemId(id);
+            model.addAttribute("userId", userId);
+            model.addAttribute("messages", messages);
+        }
 
-        UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
-        //System.out.println("id: " +((UserPrincipal) authentication.getPrincipal()).getId());// Assuming your UserDetails implementation includes an ID
-        Integer userId = userDetails.getId();
-        List<Message> messages = messageService.findByItemId(id);
+
+
         //System.out.println("Messages for itemId " + id + ": " + messages);
         // Add the item and the creator's name to the model
         model.addAttribute("item", item);
         model.addAttribute("creatorName", creatorName);
-        model.addAttribute("userId", userId);
-        model.addAttribute("messages", messages);
+
 //        model.addAttribute("sender", usersService.findById(messag));
 
 

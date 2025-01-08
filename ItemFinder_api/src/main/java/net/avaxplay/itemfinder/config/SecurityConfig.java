@@ -93,6 +93,7 @@ public class SecurityConfig {
                                 "/lost-item-singularV2/**",
                                 "/registerV2",
                                 "/terms",
+                                "/error",
 
                         "/create-userV2")
                         .permitAll() // Allow everyone to access the index page
