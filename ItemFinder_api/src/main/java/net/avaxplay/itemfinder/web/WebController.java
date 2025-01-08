@@ -286,15 +286,8 @@ messageService.add(message);
             model.addAttribute("messages", messages);
         }
 
-
-
-        //System.out.println("Messages for itemId " + id + ": " + messages);
-        // Add the item and the creator's name to the model
         model.addAttribute("item", item);
         model.addAttribute("creatorName", creatorName);
-
-//        model.addAttribute("sender", usersService.findById(messag));
-
 
         return "web/V2/found-item-singularV2";
     }
