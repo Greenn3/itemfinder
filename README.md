@@ -35,4 +35,4 @@ Extended messaging functionality (attachments, better notifications)
 OAuth login options (Google & other platforms)
 
 Live Demo
-🔗 Visit the live version at itemfinder.net
+🔗 Visit the live version at [itemfinder.net](https://itemfinder.mrhonse.com/?lang=pl)
