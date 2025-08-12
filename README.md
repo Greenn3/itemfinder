@@ -36,3 +36,12 @@ OAuth login options (Google & other platforms)
 
 Live Demo
 🔗 Visit the live version at [itemfinder.net](https://itemfinder.mrhonse.com/?lang=pl)
+
+## ⚠️ Disclaimer – Group Project
+
+This application is the result of a **team effort** and many creative brainstorming sessions.  
+As a result, the codebase contains some clutter — unused classes, methods, and configurations.  
+These issues are planned to be addressed in the future, but each team member has since moved on to other projects.
+
+If you’d like to see my more standards-compliant work, please check out: [SyncCart](https://github.com/Greenn3/SyncCart).
+
